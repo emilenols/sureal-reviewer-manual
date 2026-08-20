@@ -32,11 +32,17 @@
   header h1{font-size:34px;font-weight:700;letter-spacing:-.5px}
   header .sub{color:var(--mint);font-weight:600;margin-top:6px}
   header .stamp{color:#b8cbc2;font-size:13px;margin-top:14px}
-  .router{background:var(--paper-2);border-bottom:1px solid var(--line);padding:18px 0}
-  .router .wrap{display:flex;gap:28px;flex-wrap:wrap;font-size:14px}
-  .router b{color:var(--forest)}
+  .router{background:var(--paper-2);border-bottom:1px solid var(--line);padding:14px 0}
+  .router .wrap{font-size:14px}
+  .router .r-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+  .router .r-row{display:flex;gap:16px;align-items:baseline;padding:6px 0}
+  .router .r-row + .r-row{border-top:1px solid var(--line)}
+  .router .r-role{flex:0 0 150px;font-weight:700;color:var(--forest)}
+  .router .r-links{display:flex;gap:6px 24px;flex-wrap:wrap}
+  .router .r-plain{color:var(--ink-2)}
   .router a{color:var(--mint-dark);text-decoration:none;font-weight:600}
   .router a:hover{text-decoration:underline}
+  @media (max-width:560px){.router .r-row{flex-direction:column;gap:2px}.router .r-role{flex:none}}
   main{padding:16px 0 64px}
   section{margin-top:52px}
   h2{color:var(--forest);font-size:24px;letter-spacing:-.3px;border-bottom:3px solid var(--mint);display:inline-block;padding-bottom:4px;margin-bottom:18px}
@@ -102,15 +108,16 @@
   <div class="wrap">
     <h1>Sureal Report Reviewer</h1>
     <div class="sub">The Manual — a system that improves itself, with experts holding the pen</div>
-    <div class="stamp">Manual v1.1 · documents system v1.2 · updated 20 August 2026 · This page is the canonical manual — the copy inside the app is a snapshot and may be older.</div>
+    <div class="stamp">Manual v1.1.2 · documents system v1.2 · updated 20 August 2026 · This page is the canonical manual — the copy inside the app is a snapshot and may be older.</div>
   </div>
 </header>
 
 <div class="router">
   <div class="wrap">
-    <span><b>I review reports</b> → <a href="#use">§4 Generate</a> · <a href="#calibrate">§6 Calibration</a></span>
-    <span><b>I run the firm</b> → <a href="#goal">§1 Goal</a> · <a href="#roi">The savings math</a> · <a href="#v1">§8 Where this goes</a></span>
-    <span><b>I maintain the system</b> → <a href="#improve">§5 Improve</a> · technical docs in the repository</span>
+    <div class="r-eyebrow">Find your section</div>
+    <div class="r-row"><span class="r-role">Reviewers</span><span class="r-links"><a href="#use">Generate a review (§4)</a><a href="#calibrate">Monthly calibration (§6)</a></span></div>
+    <div class="r-row"><span class="r-role">Management</span><span class="r-links"><a href="#goal">The big picture (§1)</a><a href="#roi">The savings math</a><a href="#v1">Where this goes (§8)</a></span></div>
+    <div class="r-row"><span class="r-role">Maintainers</span><span class="r-links"><a href="#improve">Improve a credit module (§5)</a><span class="r-plain">Technical reference: the repository docs</span></span></div>
   </div>
 </div>
 
@@ -140,6 +147,8 @@
   <p>The step that matters most is the <b>rule sweep</b>: the system must return a verdict on <em>every</em> rule in the firm's rulebook — a finding anchored to the exact sentence, or an explicit "checked, clean" with a reason. The count is enforced by code. Coverage is not hoped for; it is a file (<code>rule_coverage.json</code>) delivered next to every review.</p>
   <h3>Why not just paste the report into a chatbot?</h3>
   <p>Because a chat gives you a <em>sample</em>; this gives you a <em>guarantee</em>. Five differences, each testable: <b>(1)</b> a chat produces different findings every run — this checks all rules, every run, provably, and <em>measures its own run-to-run consistency</em> (see the box below). <b>(2)</b> A chat knows BREEAM; it doesn't know <em>Sureal</em> — the rulebook is the firm's own judgment, found in no model's training data. When we measured it, a generic review deployed <b>zero</b> of the firm's calibrated rules; this system deploys <b>all of them</b>. <b>(3)</b> A chat outputs text to copy-paste; this writes anchored Word comments into the client's own file. <b>(4)</b> A chat forgets each session; here, every reviewer reply becomes candidate training for next month's rulebook. <b>(5)</b> A chat changes behaviour silently when the vendor updates; this system is versioned — behaviour changes arrive as deliberate, tested releases you can diff. <span class="note">Full measured evidence: Addendum A.</span></p>
+  <h3>And a chat “project” with the rulebook attached?</h3>
+  <p>A fair upgrade to try — load the rulebook into a persistent project (Claude Projects and similar features), and every conversation starts with the firm's knowledge already in context. It is where our own first prototype started, and it genuinely narrows difference (2). But it leaves the other four untouched — and it only half-solves the one it addresses. Rules sitting <em>in the context window</em> are material the model may draw on, not checks it must perform: nothing enforces a verdict on every rule, nothing writes a coverage ledger, and no two runs apply the same subset. You have built a better-informed sample — still not a guarantee. Delivery is still copy-paste (3); reviewer replies still evaporate when the tab closes (4); and the attached knowledge file now evolves by hand-edit — unversioned, unapproved, unmeasured — which is silent drift (5) moved in-house rather than eliminated. The difference between a project and this system is the difference between handing an intern the manual and running an audit: the same information is in the room, with an entirely different guarantee about what was done with it.</p>
   <div class="evidence">
     <b>Measured, August 2026.</b> We ran 14 real client reports — every calibrated credit plus two uncalibrated ones — through the system twice, end to end. All 28 runs completed with every audit delivered. 89% of individual rule verdicts were identical across the two runs — and the system names each rule that wavered, feeding the next calibration round. A chat can't tell you its own consistency; this system measures it on every release.
   </div>
@@ -155,19 +164,20 @@
       <button id="stV2" onclick="setStage(2)">V2 · calibrated</button>
       <button id="stV3" onclick="setStage(3)">V3 · validation-only</button>
     </div>
-    <div class="sl"><label>Reports reviewed per month <output id="oRep">6</output></label><input type="range" id="rRep" min="1" max="30" value="6" oninput="calc()"></div>
-    <div class="sl"><label>Pairs of eyes per report <output id="oRev">4</output></label><input type="range" id="rRev" min="1" max="6" value="4" oninput="calc()"></div>
-    <div class="sl"><label>Hours per reviewer per report — today <output id="oHrs">1.1 h</output></label><input type="range" id="rHrs" min="0.5" max="3" step="0.1" value="1.1" oninput="calc()"></div>
-    <div class="sl"><label>Reviewer time saved with the system <output id="oSav">40 %</output></label><input type="range" id="rSav" min="10" max="90" step="5" value="40" oninput="calc()"></div>
+    <div class="sl"><label>Reports produced per month <output id="oRep">6</output></label><input type="range" id="rRep" min="1" max="30" value="6" oninput="calc()"></div>
+    <div class="sl"><label>Authoring hours per report — the creator <output id="oAut">6.0 h</output></label><input type="range" id="rAut" min="1" max="16" step="0.5" value="6" oninput="calc()"></div>
+    <div class="sl"><label>Reviewers per report, besides the creator <output id="oRev">3</output></label><input type="range" id="rRev" min="1" max="5" value="3" oninput="calc()"></div>
+    <div class="sl"><label>Hours per reviewer pass — today <output id="oHrs">1.1 h</output></label><input type="range" id="rHrs" min="0.5" max="3" step="0.1" value="1.1" oninput="calc()"></div>
+    <div class="sl"><label>Review time saved with the system <output id="oSav">40 %</output></label><input type="range" id="rSav" min="10" max="90" step="5" value="40" oninput="calc()"></div>
     <div class="sl"><label>Internal cost per senior hour <output id="oRate">€95</output></label><input type="range" id="rRate" min="50" max="250" step="5" value="95" oninput="calc()"></div>
     <div class="tiles">
       <div class="tile hero"><div class="lbl">Saved per year</div><div class="val" id="tYear">—</div></div>
       <div class="tile"><div class="lbl">Saved per month</div><div class="val" id="tMonth">—</div></div>
-      <div class="tile"><div class="lbl">Senior hours freed / month</div><div class="val" id="tHrs">—</div></div>
+      <div class="tile"><div class="lbl">Reviewer hours freed / month</div><div class="val" id="tHrs">—</div></div>
       <div class="tile"><div class="lbl">Cost per report — before → after</div><div class="val" id="tRep">—</div></div>
     </div>
     <div class="reason">
-      <b>The reasoning behind the defaults.</b> Sureal's four-pairs-of-eyes principle means four people read the entire report plus the comment thread. A realistic blend: the first (deep) pass ≈ 1.5 h; each subsequent pass ≈ 1 h — averaging ≈ 1.1 h per reviewer. The system does not remove eyes; it makes each pass faster, because the mechanical and rulebook layer arrives pre-checked and pre-commented — reviewers start at judgment instead of at page one. <b>40 %</b> is the conservative V1 estimate for that speed-up; V2 (after months of calibration feedback) targets 60 %; V3 (validation-only, see §8) targets 80 %. The measured API cost per review is subtracted below. Move any slider you disagree with; the math updates and the formula stays visible.
+      <b>The reasoning behind the defaults.</b> Sureal's four-pairs-of-eyes principle means every report is read in full by its creator plus three fresh reviewers. The creator's authoring time (default 6 h) is part of every report's cost — and the system, honestly, does not touch it: it reviews, it doesn't write (§8 shows where that could go). The savings apply to the <em>review passes</em>: each reviewer starts from a document that arrives pre-checked and pre-commented, so they begin at judgment instead of at page one. <b>40 %</b> is the conservative V1 estimate for that speed-up; V2 (after months of calibration feedback) targets 60 %; V3 (validation-only, see §8) targets 80 %. The measured API cost per review is subtracted. Move any slider you disagree with; the math updates and the formula stays visible.
       <div class="formula" id="fLine"></div>
     </div>
   </div>
@@ -323,6 +333,8 @@
   <h2>Manual changelog</h2>
   <table class="chlog">
     <tr><th>Date</th><th>Change</th></tr>
+    <tr><td>20 Aug 2026</td><td>v1.1.2 — calculator remodel: the creator's authoring hours are now a separate input, counted in report cost but excluded from the savings (the system reviews; it doesn't author).</td></tr>
+    <tr><td>20 Aug 2026</td><td>v1.1.1 — §2: added why a chat “project” with the rulebook attached still isn't a system; reader navigation under the header redesigned into audience rows.</td></tr>
     <tr><td>20 Aug 2026</td><td>v1.1 hosted edition goes live; version stamp switches from exact patch to series (v1.2).</td></tr>
     <tr><td>20 Aug 2026</td><td>v1.1 — Hosted edition: this page becomes the canonical manual. Batch-QA evidence added (§2, Addendum A); §3 rewritten for the native Windows installer and one-click update; §4 status-page and honest-completion updates; §5 testing-vs-calibrating distinction; §6 rewritten around the shared calibration folder and verdict workbook; roadmap refreshed (v1.2 shipped, v1.3 announced); "What it doesn't do (yet)" added.</td></tr>
     <tr><td>Aug 2026</td><td>v1.0 — First edition, shipped inside the app with system v1.0.0.</td></tr>
@@ -332,7 +344,7 @@
 </main>
 
 <footer>
-  <div class="wrap">Sureal Report Reviewer · Manual v1.1 for the v1.2 system · This page is the manual's canonical home; a snapshot ships inside the app and may lag behind it. Maintainer: Sureal.</div>
+  <div class="wrap">Sureal Report Reviewer · Manual v1.1.2 for the v1.2 system · This page is the manual's canonical home; a snapshot ships inside the app and may lag behind it. Maintainer: Sureal.</div>
 </footer>
 
 <script>
@@ -349,28 +361,34 @@
   }
   function calc(){
     var rep = +document.getElementById('rRep').value;
+    var aut = +document.getElementById('rAut').value;
     var rev = +document.getElementById('rRev').value;
     var hrs = +document.getElementById('rHrs').value;
     var sav = +document.getElementById('rSav').value/100;
     var rate= +document.getElementById('rRate').value;
     var api = (API_COST===null) ? 0 : API_COST;
-    var apiTxt = (API_COST===null) ? '€— API (measured fee, pending)' : '€'+API_COST.toFixed(2)+' API';
+    var apiTxt = (API_COST===null) ? '€— API' : '€'+API_COST.toFixed(2)+' API';
     document.getElementById('oRep').textContent = rep;
+    document.getElementById('oAut').textContent = aut.toFixed(1)+' h';
     document.getElementById('oRev').textContent = rev;
     document.getElementById('oHrs').textContent = hrs.toFixed(1)+' h';
     document.getElementById('oSav').textContent = Math.round(sav*100)+' %';
     document.getElementById('oRate').textContent = '€'+rate;
-    var before = rev*hrs*rate;
-    var after  = rev*hrs*(1-sav)*rate + api;
-    var perRep = before - after;
-    var month  = perRep*rep;
-    var hFreed = rev*hrs*sav*rep;
+    var authorCost   = aut*rate;                      // untouched by the system
+    var reviewBefore = rev*hrs*rate;
+    var before  = authorCost + reviewBefore;          // full internal cost per report
+    var saving  = rev*hrs*sav*rate - api;             // savings on review passes only
+    var after   = before - saving;
+    var month   = saving*rep;
+    var hFreed  = rev*hrs*sav*rep;
     document.getElementById('tYear').textContent  = fmtEur(month*12);
     document.getElementById('tMonth').textContent = fmtEur(month);
     document.getElementById('tHrs').textContent   = hFreed.toFixed(0)+' h';
     document.getElementById('tRep').textContent   = fmtEur(before)+' → '+fmtEur(after);
     document.getElementById('fLine').textContent =
-      'saving/report = ('+rev+' eyes × '+hrs.toFixed(1)+' h × €'+rate+') − ('+rev+' × '+hrs.toFixed(1)+' × '+(1-sav).toFixed(2)+' × €'+rate+' + '+apiTxt+') = '+fmtEur(perRep)+'  →  × '+rep+' reports = '+fmtEur(month)+'/month';
+      'saving/report = ('+rev+' reviewers × '+hrs.toFixed(1)+' h × '+Math.round(sav*100)+'% × €'+rate+') − '+apiTxt+' = '+fmtEur(saving)
+      +'  ·  report cost ('+aut.toFixed(1)+' h authoring + '+rev+' reviews): '+fmtEur(before)+' → '+fmtEur(after)
+      +'  ·  × '+rep+' reports = '+fmtEur(month)+'/month';
   }
   calc();
 </script>
