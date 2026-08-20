@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sureal Report Reviewer — The Manual</title>
+<style>
+  :root{
+    --forest:#14342b; --mint:#7dd956; --mint-dark:#4ea82e;
+    --ink:#1a2420; --ink-2:#4a5a52; --ink-3:#7a8a82;
+    --paper:#ffffff; --paper-2:#f4f7f5; --line:#dde5e0;
+    --warn-bg:#fdf6e3; --warn-edge:#c9a227;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.6;font-size:16px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px}
+  header{background:var(--forest);color:#fff;padding:48px 0 40px}
+  header h1{font-size:34px;font-weight:700;letter-spacing:-.5px}
+  header .sub{color:var(--mint);font-weight:600;margin-top:6px}
+  header .stamp{color:#b8cbc2;font-size:13px;margin-top:14px}
+  .router{background:var(--paper-2);border-bottom:1px solid var(--line);padding:18px 0}
+  .router .wrap{display:flex;gap:28px;flex-wrap:wrap;font-size:14px}
+  .router b{color:var(--forest)}
+  .router a{color:var(--mint-dark);text-decoration:none;font-weight:600}
+  .router a:hover{text-decoration:underline}
+  main{padding:16px 0 64px}
+  section{margin-top:52px}
+  h2{color:var(--forest);font-size:24px;letter-spacing:-.3px;border-bottom:3px solid var(--mint);display:inline-block;padding-bottom:4px;margin-bottom:18px}
+  h3{color:var(--forest);font-size:17px;margin:26px 0 8px}
+  p{margin:10px 0;color:var(--ink)}
+  .lead{font-size:18px;color:var(--ink-2)}
+  ol.steps{margin:14px 0 14px 0;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps li{counter-increment:st;position:relative;padding:10px 14px 10px 52px;border:1px solid var(--line);border-radius:8px;margin-bottom:8px;background:var(--paper)}
+  ol.steps li::before{content:counter(st);position:absolute;left:14px;top:12px;width:26px;height:26px;border-radius:50%;background:var(--forest);color:var(--mint);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}
+  code,kbd{font-family:ui-monospace,Consolas,monospace;font-size:13.5px;background:var(--paper-2);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+  pre{background:var(--forest);color:#dff0e6;border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:13.5px;margin:12px 0}
+  pre code{background:none;border:none;color:inherit;padding:0}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:18px 0}
+  .flow .st{flex:1 1 120px;min-width:118px;border:1.5px solid var(--forest);border-radius:8px;padding:10px 10px;text-align:center;font-size:12.5px;background:var(--paper)}
+  .flow .st b{display:block;font-size:13px;color:var(--forest)}
+  .flow .st .tag{display:inline-block;margin-top:6px;font-size:10.5px;font-weight:700;letter-spacing:.4px;padding:1px 8px;border-radius:10px}
+  .tag.py{background:var(--paper-2);color:var(--ink-2);border:1px solid var(--line)}
+  .tag.ai{background:var(--forest);color:var(--mint)}
+  .pitfalls{background:var(--warn-bg);border-left:4px solid var(--warn-edge);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0}
+  .pitfalls h3{margin-top:0;color:#7a6210}
+  .pitfalls li{margin:8px 0 8px 18px}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px}
+  th{background:var(--forest);color:#fff;text-align:left;padding:8px 12px;font-weight:600}
+  td{border:1px solid var(--line);padding:8px 12px;vertical-align:top}
+  tr:nth-child(even) td{background:var(--paper-2)}
+  .ladder{border-left:3px solid var(--mint);margin:16px 0;padding-left:0}
+  .rung{position:relative;padding:12px 16px 12px 24px;margin:0 0 10px 0}
+  .rung::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;border-radius:50%;background:var(--mint);border:3px solid var(--paper)}
+  .rung b{color:var(--forest)}
+  .rung .you{display:inline-block;font-size:12px;font-weight:700;color:var(--mint-dark);margin-left:6px}
+  /* calculator */
+  .calc{background:var(--forest);border-radius:12px;padding:26px 28px;color:#e8f2ec;margin:18px 0}
+  .calc h3{color:#fff;margin-top:0}
+  .calc .stage{display:flex;gap:8px;margin:12px 0 18px}
+  .calc .stage button{flex:1;border:1.5px solid var(--mint);background:transparent;color:var(--mint);font-weight:700;padding:8px 4px;border-radius:8px;cursor:pointer;font-size:13.5px}
+  .calc .stage button.on{background:var(--mint);color:var(--forest)}
+  .sl{margin:14px 0}
+  .sl label{display:flex;justify-content:space-between;font-size:14px;color:#cfe2d7}
+  .sl label output{font-weight:700;color:#fff;font-variant-numeric:normal}
+  .sl input[type=range]{width:100%;accent-color:var(--mint);margin-top:4px}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0 6px}
+  .tile{background:rgba(255,255,255,.07);border:1px solid rgba(125,217,86,.35);border-radius:10px;padding:14px 16px}
+  .tile .lbl{font-size:12.5px;color:#b8cbc2}
+  .tile .val{font-size:26px;font-weight:600;color:#fff;margin-top:2px}
+  .tile.hero .val{font-size:48px;color:var(--mint)}
+  .reason{background:rgba(255,255,255,.06);border-radius:8px;padding:14px 16px;font-size:13.5px;color:#cfe2d7;margin-top:16px}
+  .reason b{color:#fff}
+  .formula{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;color:var(--mint);margin-top:8px;word-wrap:break-word}
+  .note{font-size:13.5px;color:var(--ink-3);font-style:italic}
+  .proof td:first-child{font-weight:600;color:var(--forest);white-space:nowrap}
+  footer{background:var(--paper-2);border-top:1px solid var(--line);padding:22px 0;font-size:13px;color:var(--ink-3)}
+  @media print{.calc{display:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Sureal Report Reviewer</h1>
+    <div class="sub">The Manual — a system that improves itself, with experts holding the pen</div>
+    <div class="stamp">Manual v1.0 · System v1.0.0 · August 2026 · This manual ships with the software and updates with it.</div>
+  </div>
+</header>
+
+<div class="router">
+  <div class="wrap">
+    <span><b>I review reports</b> → <a href="#use">§4 Generate</a> · <a href="#calibrate">§6 Calibration</a></span>
+    <span><b>I run the firm</b> → <a href="#goal">§1 Goal</a> · <a href="#roi">The savings math</a> · <a href="#v1">§8 Where this goes</a></span>
+    <span><b>I maintain the system</b> → <a href="#improve">§5 Improve</a> · technical docs in the repository</span>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section id="goal">
+  <h2>1 · The big picture</h2>
+  <p class="lead">We have entered the era where software improves itself. This is what that looks like for BREEAM review.</p>
+  <p>Traditional software is finished the day it ships, and ages from that moment. This system is the opposite: it is an <b>agentic micro-engine</b> — a growing body of firm-owned knowledge (calibrated rules, reviewer verdicts, regulation packs, coverage ledgers) that every review adds to, and that AI agents read, apply, and extend. The software your team uses next quarter will be measurably better than today's — not because a vendor shipped an update, but because <em>your own reviewed reports taught it</em>. Improvement is the product's default state; humans approve every step of it.</p>
+  <p>The concrete problem it solves today: Sureal reviews BREEAM credit reports with a four-pairs-of-eyes principle — every draft is read, in full, by multiple senior reviewers before it reaches a client. That produces excellent reviews, and consumes senior hours on every report, on checks that repeat from document to document: terminology, consistency, completeness, the firm's hard-won rules about what assessors accept.</p>
+  <p>This system captures those repeating checks — distilled from hundreds of historical reviewer comments into a calibrated, firm-owned rulebook — and applies <em>all of them, every time, provably</em>, in about five minutes, writing its findings as ordinary Word comments into the document itself. The senior eyes then do what only senior eyes can: judge, decide, and sign.</p>
+  <p><b>The product is not any single credit review. The product is the infrastructure plus the rulebook</b> — a system Sureal's team extends themselves (new credits, new rules, new schemes) and that compounds: every reviewed report can teach the next one.</p>
+</section>
+
+<section id="solution">
+  <h2>2 · The current solution — and why it's the right one</h2>
+  <p>A reviewed document goes through a pipeline of thirteen steps. The principle: <b>deterministic code where determinism belongs, AI where judgment belongs, and a ledger proving nothing was skipped.</b></p>
+  <div class="flow">
+    <div class="st"><b>Extract</b>text, tables, figures<span class="tag py">CODE</span></div>
+    <div class="st"><b>Mechanical checks</b>formatting · names · scheme match<span class="tag py">CODE</span></div>
+    <div class="st"><b>Audit wave</b>numbers · quality · visuals · annexes — in parallel<span class="tag ai">AI</span></div>
+    <div class="st"><b>Rule sweep</b>every calibrated rule: finding or checked-clean<span class="tag ai">AI</span></div>
+    <div class="st"><b>Consolidate</b>merge · dedupe · prioritise<span class="tag ai">AI</span></div>
+    <div class="st"><b>Word comments</b>anchored in the document<span class="tag py">CODE</span></div>
+    <div class="st"><b>Verify + ledger</b>coverage proven per rule<span class="tag py">CODE</span></div>
+  </div>
+  <p>The step that matters most is the <b>rule sweep</b>: the system must return a verdict on <em>every</em> rule in the firm's rulebook — a finding anchored to the exact sentence, or an explicit "checked, clean" with a reason. The count is enforced by code. Coverage is not hoped for; it is a file (<code>rule_coverage.json</code>) delivered next to every review.</p>
+  <h3>Why not just paste the report into a chatbot?</h3>
+  <p>Because a chat gives you a <em>sample</em>; this gives you a <em>guarantee</em>. Five differences, each testable: <b>(1)</b> a chat produces different findings every run — this checks all rules, every run, provably. <b>(2)</b> A chat knows BREEAM; it doesn't know <em>Sureal</em> — the rulebook is the firm's own judgment, found in no model's training data. When we measured it, a generic review deployed <b>zero</b> of the firm's calibrated rules; this system deploys <b>all of them</b>. <b>(3)</b> A chat outputs text to copy-paste; this writes anchored Word comments into the client's own file. <b>(4)</b> A chat forgets each session; here, every reviewer reply becomes candidate training for next month's rulebook. <b>(5)</b> A chat changes behaviour silently when the vendor updates; this system is versioned — behaviour changes arrive as deliberate, tested releases you can diff. <span class="note">Full measured evidence: Addendum A.</span></p>
+</section>
+
+<section id="roi">
+  <h2>The savings — do your own math</h2>
+  <div class="calc">
+    <h3>Review-cost calculator</h3>
+    <div class="stage">
+      <button id="stV1" class="on" onclick="setStage(1)">V1 · today</button>
+      <button id="stV2" onclick="setStage(2)">V2 · calibrated</button>
+      <button id="stV3" onclick="setStage(3)">V3 · validation-only</button>
+    </div>
+    <div class="sl"><label>Reports reviewed per month <output id="oRep">6</output></label><input type="range" id="rRep" min="1" max="30" value="6" oninput="calc()"></div>
+    <div class="sl"><label>Pairs of eyes per report <output id="oRev">4</output></label><input type="range" id="rRev" min="1" max="6" value="4" oninput="calc()"></div>
+    <div class="sl"><label>Hours per reviewer per report — today <output id="oHrs">1.1 h</output></label><input type="range" id="rHrs" min="0.5" max="3" step="0.1" value="1.1" oninput="calc()"></div>
+    <div class="sl"><label>Reviewer time saved with the system <output id="oSav">40 %</output></label><input type="range" id="rSav" min="10" max="90" step="5" value="40" oninput="calc()"></div>
+    <div class="sl"><label>Internal cost per senior hour <output id="oRate">€95</output></label><input type="range" id="rRate" min="50" max="160" step="5" value="95" oninput="calc()"></div>
+    <div class="tiles">
+      <div class="tile hero"><div class="lbl">Saved per year</div><div class="val" id="tYear">—</div></div>
+      <div class="tile"><div class="lbl">Saved per month</div><div class="val" id="tMonth">—</div></div>
+      <div class="tile"><div class="lbl">Senior hours freed / month</div><div class="val" id="tHrs">—</div></div>
+      <div class="tile"><div class="lbl">Cost per report — before → after</div><div class="val" id="tRep">—</div></div>
+    </div>
+    <div class="reason">
+      <b>The reasoning behind the defaults.</b> Sureal's four-pairs-of-eyes principle means four people read the entire report plus the comment thread. A realistic blend: the first (deep) pass ≈ 1.5 h; each subsequent pass ≈ 1 h — averaging ≈ 1.1 h per reviewer. The system does not remove eyes; it makes each pass faster, because the mechanical and rulebook layer arrives pre-checked and pre-commented — reviewers start at judgment instead of at page one. <b>40 %</b> is the conservative V1 estimate for that speed-up; V2 (after months of calibration feedback) targets 60 %; V3 (validation-only, see §8) targets 80 %. Each review costs ≈ <b>€2.30 in API usage</b> — already subtracted below. Move any slider you disagree with; the math updates and the formula stays visible.
+      <div class="formula" id="fLine"></div>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <h2>3 · How to install</h2>
+  <p>You need: a Windows 10/11 PC, the <code>install-win.ps1</code> file Sureal sent you (it is personal to your organisation — don't forward it), and the API key Sureal provides. <b>No administrator rights are needed, and nothing is installed system-wide</b> — everything lands under your own user profile.</p>
+  <ol class="steps">
+    <li>Save <code>install-win.ps1</code> to your Downloads folder.</li>
+    <li>Open <b>PowerShell</b> (the normal one, <em>not</em> "as administrator"), and paste: <code>cd $HOME\Downloads; powershell -ExecutionPolicy Bypass -File .\install-win.ps1</code></li>
+    <li>Follow the prompts. The installer finds your Python (or tells you exactly how to get it, no admin needed), fetches the software, asks once for the API key, runs a full offline self-test, and opens the app in your browser.</li>
+    <li>Bookmark <code>http://127.0.0.1:8000</code> — that's the app. It runs entirely on your own machine; documents never leave it except for the AI review calls.</li>
+  </ol>
+  <div class="pitfalls">
+    <p><b>If the install stops on a network or certificate error.</b> Some corporate networks block the Python package index outright, and no certificate change fixes that. Ask Sureal for <code>wheels-win64.zip</code>, unzip it so the folder <code>wheels-win64</code> sits <em>next to</em> <code>install-win.ps1</code>, and run the installer again — it will then install with no network at all.</p>
+    <p><b>If the install stops saying a package does not support your Python version.</b> That one is on us, not on you or your IT team. Send Sureal the line the installer prints; the fix is one line on our side and then you re-run the installer.</p>
+  </div>
+  <p class="note">Advanced / older installs only: if your machine was set up through <b>WSL</b> rather than natively, the equivalent scripts are <code>install.ps1</code>, <code>scripts/launch.sh</code> and <code>scripts/update.sh</code> (add <code>--check-only</code> to preview an update), run inside <code>wsl -d &lt;distro&gt;</code> — your own distro name, which <code>wsl -l -q</code> lists. New installs do not use WSL.</p>
+  <h3>Starting it again later</h3>
+  <p>Use the <b>Sureal Report Reviewer</b> desktop icon the installer created. If it is ever missing, this is the same thing: <code>powershell -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\Sureal\breeam-pipeline\scripts\launch-win.ps1" -Open</code></p>
+  <h3>Updating</h3>
+  <p>When a new version exists, a banner appears in the app: <em>"Version X available."</em> Open the Update page and press the button, or paste the single line it shows into PowerShell: <code>powershell -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\Sureal\breeam-pipeline\scripts\update-win.ps1"</code></p>
+  <p>To see what an update would do without applying it, add <code>-CheckOnly</code> to that line. The updater is transactional: it checks nothing is running, backs everything up, applies the update, re-runs the full self-test, and rolls back automatically if anything fails. Your local data — your rules, your reviews — is never touched.</p>
+</section>
+
+<section id="use">
+  <h2>4 · How to generate a review</h2>
+  <ol class="steps">
+    <li>Open the app → <b>Upload</b>. Choose the report (.docx), select the scheme (NC2016 / RFO2015 / V6 / V7), the credit, the stage, and confirm the building name.</li>
+    <li>Wait ≈ 5 minutes. The status page shows each phase as it completes.</li>
+    <li><b>Download.</b> The file keeps its original name — save it over your working copy or alongside it.</li>
+    <li>Open it in Word. The review is there as ordinary comments, each anchored to the exact sentence it concerns. <b>Every comment opens with the action</b> — see "Reading a comment" below.</li>
+    <li><b>Reply in Word to any comment you disagree with</b> — a short "disagree, this is present in annex 3" or "stop flagging this" is enough. This is not politeness; it is how the system learns (§6). Agreeing silently is fine; disagreeing silently wastes the signal.</li>
+  </ol>
+  <h3>Reading a comment</h3>
+  <p>Every comment has the same four parts, in the same order, so you can triage a whole document by reading <b>first lines only</b> and then going back for the ones that matter.</p>
+
+<pre><code>Add the calculator version to the Table 3 caption          <b>&#9312; the action</b>
+BREEAM requires the tool version so the calculation
+can be reproduced.                                          <b>&#9313; why it matters</b>
+
+Proposed caption: "Table 3 — Mat 06 calculator v2.1 output"  <b>&#9314; detail (often absent)</b>
+
+— HIGH · Source: MAT06.CD.03 · Annex A, p.12                <b>&#9315; the footer</b></code></pre>
+
+  <table>
+    <tr><td><b>&#9312; The action</b></td><td>An instruction, never a label — "State the calculator version", not "Missing calculator version". Twelve words at most. This line alone should be enough to decide whether the comment needs your attention now, later, or not at all.</td></tr>
+    <tr><td><b>&#9313; Why it matters</b></td><td>One sentence: the requirement, the risk, or the inconsistency behind the action.</td></tr>
+    <tr><td><b>&#9314; The detail</b></td><td>Present only when it adds something the first two lines do not — proposed wording, an evidence reference, or the other places the same issue appears (as one line beginning <code>Also:</code>). Most MEDIUM and LOW comments stop after line 2; CRITICAL and HIGH ones may run longer when there is genuinely more to say.</td></tr>
+    <tr><td><b>&#9315; The footer</b></td><td>Severity, the rule IDs that fired, and where in the document. The <code>Source:</code> IDs are how a reply you write gets traced back to the rule that produced the comment (§6) — so keep them in the thread when you reply.</td></tr>
+  </table>
+
+  <p class="note">Comments were previously several times this length, repeating the action as a title, again under "Action Required", and a third time as proposed text. If you still see one shaped that way, it came from an older version — the version is stamped at the foot of every page of this manual.</p>
+
+  <p><b>The coverage ledger.</b> Next to each review the system writes <code>rule_coverage.json</code>: which rules produced findings, which were checked and found clean. Nothing is sampled; everything is swept. You can show this file to a client or an assessor as evidence of review rigour.</p>
+  <p class="note">If the document states a different BREEAM version than the scheme you selected, the review will flag it (SCH.1). That flag is usually right — check the project's actual registration before dismissing it.</p>
+</section>
+
+<section id="improve">
+  <h2>5 · How to improve a credit module</h2>
+  <p>Each credit (Mat 06, Tra 05, …) has its own rule pack. Packs start as scaffolds — the pipeline runs, mechanical checks work, but the credit-specific rulebook is empty. A pack becomes <b>calibrated</b> by learning from history:</p>
+  <table>
+    <tr><th>What you feed it</th><th>Minimum for a calibrated pack</th></tr>
+    <tr><td>Fully reviewed historical reports (.docx with the reviewers' comments still in them), same credit &amp; stage</td><td><b>8–10 documents.</b> The Mat 06 concept-design pack — the reference standard — was calibrated on 8. Below that, the pack still works but is flagged <em>low-confidence</em> and its findings deserve extra scepticism.</td></tr>
+    <tr><td>Comment density</td><td>A useful document carries ≥ 6 substantive reviewer comments. Cover pages and sign-offs teach nothing.</td></tr>
+  </table>
+  <ol class="steps">
+    <li>Collect the reviewed DOCX files. Do <b>not</b> rename anything to <code>*_ORIGINAL.docx</code> — that suffix is reserved by the system.</li>
+    <li>App → <b>Expert Rules</b> → select the credit and stage → upload the documents.</li>
+    <li>The system extracts every reviewer comment, clusters recurring concerns into candidate rules, and applies safety gates: a candidate needs a correct <em>and</em> an incorrect example, and must appear in at least two documents. Singletons are parked, not published.</li>
+    <li>Candidates go to a <b>staging file — never directly into the live rulebook.</b> The result page shows a green button: <em>Download candidates file — send to Sureal.</em> Do that. Nothing takes effect until a human at Sureal has approved each rule individually.</li>
+    <li>Approved rules arrive in a future update, and from then on every review of that credit applies them — with the coverage ledger proving it.</li>
+  </ol>
+</section>
+
+<section id="calibrate">
+  <h2>6 · The monthly calibration</h2>
+  <p>Once a month, the system learns from the month's real work. Two signals feed it: the <b>replies</b> reviewers wrote on AI comments (§4 step 5), and <b>new reviewed documents</b> (§5). The routine:</p>
+  <ol class="steps">
+    <li><b>Reviewers:</b> upload the month's commented reports via Expert Rules whenever convenient — end of month at the latest. Download each candidates file and send it to Sureal. That attachment is the entire hand-over; nothing moves automatically.</li>
+    <li><b>Sureal:</b> reviews every candidate and every disagreement verdict in an interactive approve/reject session, rule by rule. Accepted changes are validated, version-stamped, and released.</li>
+    <li><b>Everyone:</b> runs the update when the banner appears. The improved rulebook is now live for the whole team at once.</li>
+  </ol>
+  <div class="pitfalls">
+    <h3>⚠ Pitfalls — each of these was learned the hard way</h3>
+    <ul>
+      <li><b>Never edit the rule database files by hand.</b> A hand-calibrated ruleset was once overwritten by a well-intentioned bulk operation and survived only because of version control. All changes go through the staged approve flow, which validates before every write.</li>
+      <li><b>Keep working in the reviewed file.</b> Your replies to the AI's comments are only visible to the system in the file that contains them. If you copy text into a fresh document, the learning signal dies with the old file.</li>
+      <li><b>One report, one upload per round.</b> Uploading the same document twice inflates rule frequencies and can push weak rules over the acceptance threshold.</li>
+      <li><b>Resolve scheme flags, don't dismiss them.</b> When the system raises SCH.1 (document says V6, review ran NC2016), confirm the project's actual registration first. This mismatch was found on multiple historical documents — it is not a false alarm by default.</li>
+      <li><b>The candidates file does nothing on your machine.</b> Until it is sent to Sureal and approved, it's a proposal in a folder. Send it.</li>
+      <li><b>Disagreement is data.</b> The most valuable thing a reviewer can do for the system is reply "disagree — here's why" on a wrong comment. Suppressed annoyance teaches nothing; a two-line reply retrains the rulebook.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="roadmap">
+  <h2>7 · Planned improvements</h2>
+  <table>
+    <tr><th>Release</th><th>What changes</th><th>Why it matters</th></tr>
+    <tr><td><b>v1.2</b></td><td>Quote-grounding with retry (every finding's cited text verified verbatim before acceptance); consolidation rebuilt as accountable code with a merge ledger; prompt caching.</td><td>Even fewer misplaced comments; a written reason for every merged or dropped finding; cost per report from ≈ €2.30 toward ≈ €0.50.</td></tr>
+    <tr><td><b>v1.3</b></td><td>Evaluation harness: a frozen gold set of reviewed documents, scored per-rule (precision / recall) on every change.</td><td>Model and rule upgrades become measured decisions, not judgment calls. The gate for V2 → V3 claims.</td></tr>
+    <tr><td><b>v2</b></td><td>Calibration automation (registry, document identity, automatic monthly collection); SharePoint in-place operation — comments written directly into the working file, no upload/download; desktop launcher.</td><td>The learning loop runs itself; the fork between "working file" and "reviewed file" disappears.</td></tr>
+    <tr><td><b>Ongoing</b></td><td>V7 (SD6073) rule encoding by the Sureal team from real V7 review documents, using §5.</td><td>The catalogue grows to the new scheme with the same graduation discipline.</td></tr>
+  </table>
+</section>
+
+<section id="v1">
+  <h2>8 · This is a V1 — where it goes from here</h2>
+  <p>What you are using today is the first rung of a ladder. The destination is not "AI instead of experts" — it is a steadily rising division of labour in which <b>the human never leaves the loop; the loop moves up.</b></p>
+  <div class="ladder">
+    <div class="rung"><b>V1 — the tireless junior</b> <span class="you">you are here</span><br>The system drafts the review; every calibrated rule is swept and proven. Experts still author the final judgment. Value: senior hours stop being spent on mechanical and rulebook checks. Reviewer time ≈ −40 %.</div>
+    <div class="rung"><b>V2 — the reliable colleague</b><br>Months of reply-verdicts and monthly calibration have tuned the rulebook to the team. Drafts need visibly less correction; the coverage ledger ships with every client review as a rigour statement. Requires: sustained §6 discipline. Reviewer time ≈ −60 %.</div>
+    <div class="rung"><b>V3 — validation-ready</b><br>The report review arrives practically flawless <em>in Sureal's own voice</em> — house terminology, house structure, house judgment — because the style itself is learned from accumulated verdicts. The expert's role shifts from author to <b>approver</b>: read, decide, sign. Requires: the v1.3 evaluation harness proving per-rule precision, so "practically flawless" is a measured claim, not a feeling. Reviewer time ≈ −80 %.</div>
+    <div class="rung"><b>V4 — the standard</b><br>New staff are trained <em>by</em> the system's rulebook rather than the reverse. The firm's expertise is an institutional asset — versioned, auditable, teachable — not tacit knowledge in a few senior heads.</div>
+  </div>
+  <p>Each rung is earned by data, not declared by software: V2 by calibration months, V3 by measured precision. The calculator above has a stage toggle — the business case for climbing is yours to inspect.</p>
+
+  <h3>Beyond the ladder — the iteration engine</h3>
+  <p>The ladder describes the review getting better. The bigger opportunity is the <em>rest of the value chain</em>. Look at the life of a credit report today:</p>
+  <div class="flow">
+    <div class="st"><b>Project data</b>gathering<span class="tag py">HUMAN</span></div>
+    <div class="st"><b>Evidence &amp; figures</b>maps · screenshots · annotations<span class="tag py">HUMAN</span></div>
+    <div class="st"><b>Authoring</b>someone types every report<span class="tag py">HUMAN</span></div>
+    <div class="st"><b>Review</b>this system<span class="tag ai">AUTOMATED ✓</span></div>
+    <div class="st"><b>Correction</b>reviewer + AI comments<span class="tag py">HUMAN + AI</span></div>
+    <div class="st"><b>Validation &amp; delivery</b>sign and send<span class="tag py">HUMAN</span></div>
+  </div>
+  <p>Only one step is automated so far. Every [HUMAN] box is a candidate for the same treatment — and because the system's knowledge lives in a repository agents can read, <b>the system can propose these expansions itself</b>. A concrete example: for transport credits (Tra 01/02), a person today takes Google Maps screenshots and hand-annotates transit stops, walking distances and amenities. An agent that has read this project can notice that, propose it, and build a prototype that generates those figures from a project address — evaluated against the figures in historical reports, approved by a human, and only then added to the pipeline. Analyse → propose → prototype → measure → approve → graduate: the same gated loop that governs the rulebook, applied to the software's own scope.</p>
+  <p><b>That is the story this project tells:</b> not a tool that was built once, but a system that keeps finding its own next improvement — with Sureal's experts holding the approval pen at every step.</p>
+</section>
+
+<section id="addendum">
+  <h2>Addendum A · The proof</h2>
+  <p>Every claim in §2, measured on this system, August 2026, on a real Sureal Mat 06 concept-design report (Montoyer 59):</p>
+  <table class="proof">
+    <tr><th>Claim</th><th>Measurement</th></tr>
+    <tr><td>Rulebook actually deploys</td><td>Generic-era baseline (May 2026): <b>0 / 30</b> calibrated rules cited. Current system: <b>30 / 30</b> swept and enforced by code — 24 findings, 6 checked-clean, 0 dropped in consolidation, per the coverage ledger.</td></tr>
+    <tr><td>Comments land where they belong</td><td>42 client-facing comments, <b>0 unanchored</b>, each labelled with source rule and severity. Internal/diagnostic findings are routed to a verification file, not the client document.</td></tr>
+    <tr><td>Speed &amp; cost</td><td><b>≈ 5 minutes</b> and <b>≈ €2.30</b> per full review (measured: 4 m 57 s, $2.47).</td></tr>
+    <tr><td>It catches what humans missed</td><td>The deterministic scheme check found that <b>every stored historical document states BREEAM V6</b> while reviews had been run as NC2016 — a systematic mismatch invisible until the system existed.</td></tr>
+    <tr><td>Behaviour changes are auditable</td><td>The May baseline was reproduced from archived artifacts and diffed comment-by-comment against the current system — kept / re-found / genuinely changed, each classified. No silent drift: every difference explained, two regressions found and fixed before release.</td></tr>
+    <tr><td>The learning loop is safe</td><td>Candidate rules can only reach the live rulebook through a human approve/reject session, after schema validation, with both-example and frequency-≥2 gates. Every change is version-controlled and reversible.</td></tr>
+  </table>
+  <p class="note">Methodology available on request: archived run artifacts, the comment-diff tooling, and the coverage ledgers are all retained and reproducible.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">Sureal Report Reviewer · Manual v1.0 for system v1.0.0 · This file lives in the repository and is served on the app's Manual page — it updates with the software. Maintainer: Sureal (Emile Nols). Technical reference: CONTRACTS.md and the session handoff docs in the repository.</div>
+</footer>
+
+<script>
+  var API_COST = 2.3; // EUR per report, measured
+  var stagePresets = {1:40, 2:60, 3:80};
+  function setStage(s){
+    document.getElementById('rSav').value = stagePresets[s];
+    [1,2,3].forEach(function(i){document.getElementById('stV'+i).classList.toggle('on', i===s);});
+    calc();
+  }
+  function fmtEur(v){
+    if (v>=10000) return '€'+(v/1000).toFixed(1)+'k';
+    return '€'+Math.round(v).toLocaleString('en-GB');
+  }
+  function calc(){
+    var rep = +document.getElementById('rRep').value;
+    var rev = +document.getElementById('rRev').value;
+    var hrs = +document.getElementById('rHrs').value;
+    var sav = +document.getElementById('rSav').value/100;
+    var rate= +document.getElementById('rRate').value;
+    document.getElementById('oRep').textContent = rep;
+    document.getElementById('oRev').textContent = rev;
+    document.getElementById('oHrs').textContent = hrs.toFixed(1)+' h';
+    document.getElementById('oSav').textContent = Math.round(sav*100)+' %';
+    document.getElementById('oRate').textContent = '€'+rate;
+    var before = rev*hrs*rate;
+    var after  = rev*hrs*(1-sav)*rate + API_COST;
+    var perRep = before - after;
+    var month  = perRep*rep;
+    var hFreed = rev*hrs*sav*rep;
+    document.getElementById('tYear').textContent  = fmtEur(month*12);
+    document.getElementById('tMonth').textContent = fmtEur(month);
+    document.getElementById('tHrs').textContent   = hFreed.toFixed(0)+' h';
+    document.getElementById('tRep').textContent   = fmtEur(before)+' → '+fmtEur(after);
+    document.getElementById('fLine').textContent =
+      'saving/report = ('+rev+' eyes × '+hrs.toFixed(1)+' h × €'+rate+') − ('+rev+' × '+hrs.toFixed(1)+' × '+(1-sav).toFixed(2)+' × €'+rate+' + €'+API_COST.toFixed(2)+' API) = '+fmtEur(perRep)+'  →  × '+rep+' reports = '+fmtEur(month)+'/month';
+  }
+  calc();
+</script>
+</body>
+</html>
