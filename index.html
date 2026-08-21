@@ -108,7 +108,7 @@
   <div class="wrap">
     <h1>Sureal Report Reviewer</h1>
     <div class="sub">The Manual — a system that improves itself, with experts holding the pen</div>
-    <div class="stamp">Manual v1.1.2 · documents system v1.2 · updated 20 August 2026 · This page is the canonical manual — the copy inside the app is a snapshot and may be older.</div>
+    <div class="stamp">Manual v1.1.3 · documents system v1.2 · updated 20 August 2026 · This page is the canonical manual — the copy inside the app is a snapshot and may be older.</div>
   </div>
 </header>
 
@@ -118,6 +118,7 @@
     <div class="r-row"><span class="r-role">Reviewers</span><span class="r-links"><a href="#use">Generate a review (§4)</a><a href="#calibrate">Monthly calibration (§6)</a></span></div>
     <div class="r-row"><span class="r-role">Management</span><span class="r-links"><a href="#goal">The big picture (§1)</a><a href="#roi">The savings math</a><a href="#v1">Where this goes (§8)</a></span></div>
     <div class="r-row"><span class="r-role">Maintainers</span><span class="r-links"><a href="#improve">Improve a credit module (§5)</a><span class="r-plain">Technical reference: the repository docs</span></span></div>
+    <div class="r-row"><span class="r-role">Admins</span><span class="r-links"><a href="#admin">The admin seat (§9)</a></span></div>
   </div>
 </div>
 
@@ -300,6 +301,37 @@
   <p><b>That is the story this project tells:</b> not a tool that was built once, but a system that keeps finding its own next improvement — with Sureal's experts holding the approval pen at every step.</p>
 </section>
 
+<section id="admin">
+  <h2>9 · The admin seat — governance and setup</h2>
+  <p>Every install can <em>capture</em>: rules proposed from reviewed documents, and verdicts on the AI's comments. Exactly <b>one</b> install per organisation — the admin seat — reviews, approves, and publishes them. Nothing reaches any rulebook without that seat's human approve/reject, rule by rule; accepted changes reach the whole team as a versioned release through the ordinary update banner. On every other install the admin page simply does not exist — not hidden behind a login, absent by design. Two separate things make a seat the admin: a local flag (shows the page at all) and a write token (allows publishing). The flag without the token can review but never release.</p>
+
+  <h3>One-time setup — step 1 · Activate the admin page</h3>
+  <p>The flag is deliberately not settable from the web interface. On the admin's machine, open <b>PowerShell</b> (normal, <em>not</em> "as administrator") and paste:</p>
+  <pre><code>cd "$env:LOCALAPPDATA\Sureal\breeam-pipeline"; &amp; ".\.venv\Scripts\python.exe" -c "from calibration import admin; admin.set_admin(True); print('is_admin:', admin.is_admin())"</code></pre>
+  <p><b>What you'll see:</b> <code>is_admin: True</code> and nothing else. Reload the app — a <b>Rules admin</b> entry appears in the top bar. To deactivate, run the same line with <code>False</code>; the admin page then returns "not found" again, which is the correct state for every non-admin install.</p>
+
+  <h3>Step 2 · The write token</h3>
+  <p>On the GitHub account that owns the repository: Settings → Developer settings → Fine-grained tokens → Generate. Repository access: <b>only</b> the Sureal repository. Permissions: Contents = Read and write. Expiry: 1 year — put the expiry date in a calendar the day you mint it, because an expired token surfaces as a refused publish, not a warning. Name it after the seat.</p>
+  <p>The token is pasted <b>once</b>, into the "Write token" box on the Rules admin page, in the browser — nowhere else, ever. Three rules: <b>(1)</b> the token travels through no mail, no chat, no terminal; if it ever appears in one, treat it as compromised — revoke on GitHub, mint a new one. <b>(2)</b> After saving, the app shows only a short fingerprint; that fingerprint is the only way the token is ever displayed, and it is how you verify which token is stored. <b>(3)</b> This is the only read-write token in the fleet — every other install is read-only, which is precisely what makes this seat the only writer.</p>
+
+  <h3>Step 3 · The calibration folder</h3>
+  <p>The folder is the team's entire hand-over channel: reviewed documents and candidates files go in; the admin's queue fills itself from it.</p>
+  <ol class="steps">
+    <li>In the organisation's shared SharePoint/OneDrive library, create a folder named <b>Calibration</b> and sync it to the admin machine. Right-click it in Explorer → <b>"Always keep on this device"</b> — the sweep reads real files, not cloud placeholders.</li>
+    <li>On the Rules admin page, point the app at that folder. The app drops a small marker file inside and creates its working subfolders (inbox, expert-review, processed, quarantine) — the marker is how every machine recognises the folder whatever its local path, so never delete it.</li>
+    <li>Tell the team the one rule that matters: drop files into the folder and leave them alone — no renaming, no moving out. The monthly round pairs each file against the system's records; renaming breaks the pairing.</li>
+  </ol>
+
+  <h3>The routine</h3>
+  <ol class="steps">
+    <li>Captured rules and feedback verdicts arrive via the calibration folder; "Check the folder now" (or the background sweep) ingests them into <b>Waiting for review</b>.</li>
+    <li>When a round is due, export the <b>Expert review sheet</b> per credit. The returning sheet is read back through the same ingest — only its verdict and comment columns are ever applied; any other change to the sheet is surfaced as a proposal, never silently absorbed.</li>
+    <li>Decide every queued item one at a time: <b>Approve as proposed / Approve edited / Reject</b>, with an optional "why" kept alongside the decision. Approving changes no rulebook by itself.</li>
+    <li><b>Publish</b> applies the whole approved set in one transaction — contract gate, version bump, release — and the team receives it through the ordinary update banner. Publish refuses, loudly and safely, while a review job is running, while nothing is approved, while the install is behind the latest release, or while program files have local edits.</li>
+  </ol>
+  <p class="note">Current version: on a Windows install, Publish can refuse with "local edits outside the data paths" naming four pack folders — a known false positive of the Windows file-link handling, not real damage. Until the fix ships: decide everything in the admin page as normal, then tell Sureal a release is ready; Sureal publishes it. This note disappears when the fix lands.</p>
+</section>
+
 <section id="honesty">
   <h2>What it doesn't do (yet)</h2>
   <div class="honest">
@@ -333,9 +365,9 @@
   <h2>Manual changelog</h2>
   <table class="chlog">
     <tr><th>Date</th><th>Change</th></tr>
+    <tr><td>21 Aug 2026</td><td>v1.1.3 — §3: the universal install command now lives in the manual itself; the daily entry point is the desktop icon. New §9: the admin seat — activation, write token, calibration-folder setup, and the review/publish routine.</td></tr>
     <tr><td>20 Aug 2026</td><td>v1.1.2 — calculator remodel: the creator's authoring hours are now a separate input, counted in report cost but excluded from the savings (the system reviews; it doesn't author).</td></tr>
     <tr><td>20 Aug 2026</td><td>v1.1.1 — §2: added why a chat “project” with the rulebook attached still isn't a system; reader navigation under the header redesigned into audience rows.</td></tr>
-    <tr><td>20 Aug 2026</td><td>v1.1 hosted edition goes live; version stamp switches from exact patch to series (v1.2).</td></tr>
     <tr><td>20 Aug 2026</td><td>v1.1 — Hosted edition: this page becomes the canonical manual. Batch-QA evidence added (§2, Addendum A); §3 rewritten for the native Windows installer and one-click update; §4 status-page and honest-completion updates; §5 testing-vs-calibrating distinction; §6 rewritten around the shared calibration folder and verdict workbook; roadmap refreshed (v1.2 shipped, v1.3 announced); "What it doesn't do (yet)" added.</td></tr>
     <tr><td>Aug 2026</td><td>v1.0 — First edition, shipped inside the app with system v1.0.0.</td></tr>
   </table>
@@ -344,7 +376,7 @@
 </main>
 
 <footer>
-  <div class="wrap">Sureal Report Reviewer · Manual v1.1.2 for the v1.2 system · This page is the manual's canonical home; a snapshot ships inside the app and may lag behind it. Maintainer: Sureal.</div>
+  <div class="wrap">Sureal Report Reviewer · Manual v1.1.3 for the v1.2 system · This page is the manual's canonical home; a snapshot ships inside the app and may lag behind it. Maintainer: Sureal.</div>
 </footer>
 
 <script>
