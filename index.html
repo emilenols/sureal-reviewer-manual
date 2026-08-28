@@ -256,7 +256,7 @@
       <span class="j-kicker">Job 2 · once a month</span>
       <h3>Teach the AI</h3>
       <p>Reply in Word to comments you disagree with, then drop the finished file into the shared folder. That's the entire hand-over.</p>
-      <span class="j-time">~2 min per document · monthly</span>
+      <span class="j-time">reply only where it's wrong · monthly</span>
     </a>
   </div>
 
@@ -294,7 +294,8 @@
     <tr><td><b>LOW</b></td><td>Polish: terminology (e.g. BREEAM's "demountable"), British English, captions, formatting. Seconds each, fix in the same pass.</td></tr>
   </table>
   <p><b>The review is honest about itself.</b> An uncalibrated credit says so in its output. If one of the audit passes couldn't run, the result says <i>“complete — N of M audits unavailable”</i> with the reason. What you see is exactly what was checked — and what wasn't.</p>
-  <p><b>The coverage ledger.</b> Next to each review the system writes <code>rule_coverage.json</code>: which rules produced findings, which were checked and found clean. Nothing is sampled; everything is swept — and you can show this file to a client or an assessor as evidence of review rigour.</p>
+  <!-- [VERIFY] exact placement/label of the coverage file on the live results page before publish -->
+  <p><b>Proof of what was checked.</b> On the results page, next to the download for your reviewed document, there is a second, smaller download: the <b>coverage report</b> (a file called <code>rule_coverage.json</code>). Open it and you'll see one entry for every rule in the rulebook — each one either points to the comment it produced in your document, or says <i>"checked — clean"</i> with a short reason. No rule is ever skipped or sampled. When a client or assessor asks how thoroughly a report was reviewed, this file <em>is</em> the answer — hand it over as it is.</p>
   <p class="note">If the document states a different BREEAM version than the scheme you selected, the review flags it (SCH.1). That flag is usually right — check the project's actual registration before dismissing it.</p>
 
   <h3>Reply to the comments — this is where the teaching happens</h3>
@@ -384,7 +385,7 @@
   <h2>4 · The first month — what to expect</h2>
   <p class="lead">A small ask before you start: give it a month of patience — and your corrections. This system cannot become perfect on its own; it becomes perfect through <em>your</em> expert feedback. That's not a disclaimer, it's the design.</p>
   <p>It arrives knowing BREEAM and your historical review rules — it hasn't yet met your judgment on live work. So in the first weeks, expect the occasional comment that misses context, fires too eagerly, or isn't worded the way you'd say it. Each one needs the same thing: a two-line reply in Word. That's the entire ask.</p>
-  <div class="golden"><b>The deal, plainly.</b> You give two minutes of replies per report and one month of tolerance for rough edges. Every monthly calibration turns those replies into expert-approved rule changes — and a comment you correct once disappears <b>for the whole team</b>, permanently.</div>
+  <div class="golden"><b>The deal, plainly.</b> A review can carry 30-odd comments — you don't reply to them all. Most are simply right: fix and move on. Your part is a two-line reply on each comment that's <em>wrong</em>, plus one month of tolerance for rough edges. Every monthly calibration turns those replies into expert-approved rule changes — and a comment you correct once disappears <b>for the whole team</b>, permanently.</div>
   <div class="flow">
     <div class="st"><b>Month 1</b>rough edges + your replies</div>
     <div class="st"><b>Calibration</b>expert approves each fix</div>
