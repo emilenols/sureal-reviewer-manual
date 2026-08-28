@@ -15,9 +15,8 @@
   Every number on this page must trace to the QA artifacts or run transcripts (D5).
   A number that cannot be traced does not go on the page.
   The publish script greps for known forbidden strings and for the untraced-cost marker and refuses to push on a hit.
-  ⚠ HOLD: §5 Part 2 is written as if the sync-folder detection fix has shipped
-    (no SUREAL_ONEDRIVE_ROOTS workaround documented). Do not publish this page
-    until that fix is live on the fleet.
+  NOTE: §5 and §6 describe post-fix behaviour (sync-folder detection shipped;
+    in-app one-click update; red API-key banner) as of system v1.2.6.
 -->
 <html lang="en">
 <head>
@@ -213,7 +212,7 @@
   <div class="wrap">
     <h1>Sureal Report Reviewer</h1>
     <div class="sub">The Manual — a system that improves itself, with experts holding the pen</div>
-    <div class="stamp">Manual v1.3 · documents system v1.2 · updated 28 August 2026</div>
+    <div class="stamp">Manual v1.3 · documents system v1.2.6 · updated 28 August 2026</div>
   </div>
 </header>
 
@@ -312,6 +311,7 @@
   </div>
   <p>Silence counts weakly as agreement — a wrong comment left unanswered stays wrong next month. Two lines of reply fixes next month's reviews, not just this document.</p>
   <div class="golden"><b>The one golden rule:</b> keep working in the reviewed file. Your replies only exist in the document that holds them — copy the text into a fresh file and the teaching dies with the old one.</div>
+  <div class="yellow"><b>⚡ One habit that pays for itself: update when the yellow banner appears.</b> That banner is how the tool gets better — every release carries the rules <em>your own team</em> taught it, plus fixes. Click it, then click <b>Install update</b> — about a minute, done. An outdated seat reviews with last month's brain.</div>
 </section>
 
 <section id="feedback">
@@ -441,7 +441,8 @@
   <div class="golden"><b>Not connected yet? Nothing is lost.</b> The app works fully without the folder — anything you capture stays on your machine, and a green download button on the results screen hands it over instead. Connect whenever convenient.</div>
 
   <h3>Updating — one click, whenever the banner appears</h3>
-  <p>When a new version exists, a banner appears in the app: <i>"Version X available."</i> Open the <b>Update page</b> and click once. The updater is transactional — it refuses while a review is running, backs everything up, applies the update, re-runs the self-test, and rolls back automatically if anything fails — and it has been proven in the field, not just in theory. Your local data is never touched.</p>
+  <p>When a new version exists, a yellow banner appears in the app's top bar. Click it — the <b>Update</b> page opens, showing your installed and available versions — then click <b>Install update</b>. About a minute, and the app restarts itself. The update runs as a transaction: it refuses to start while a review is running, takes a safety copy of the code <em>and</em> all rule data first, runs the self-test, and puts the machine back exactly as it was if anything fails. Your rule data is never overwritten by an update.</p>
+  <p><b>If a red "API key" banner appears after an update:</b> the app now checks your key directly with the AI provider, and the red banner means the key stored on your machine is wrong or was pasted incompletely. Click the banner, paste the key into the page that opens, and the app confirms on the spot whether it's correct before saving — no PowerShell needed. No red banner? Your key is fine, nothing to do. If the page keeps refusing a carefully pasted key, screenshot it to your admin — a fresh key comes through the usual channel.</p>
 
   <div class="askadmin"><span class="aa-ic">🛟</span><p><b>Any trouble with either part?</b> Don't troubleshoot — take a screenshot and ask your admin. They'll sort it out with Sureal, usually the same day.</p></div>
 </section>
@@ -655,7 +656,7 @@
   <h2>Manual changelog</h2>
   <table class="chlog">
     <tr><th>Date</th><th>Change</th></tr>
-    <tr><td>28 Aug 2026</td><td>v1.3 — Restructure: new §6 The admin guide (setup, write token, calibration folder, monthly routine, teaching a credit its rules) replaces the old admin-seat section; the old install, generate-a-review, improve-a-credit and monthly-calibration sections are removed, with their unique content folded into §1 (schemes, severity meanings, coverage ledger, SCH.1), §5 (requirements, network note, Updating) and §6 (teaching flow). GitHub token-minting mechanics removed from this public page; the write token is delivered by Sureal through a secure channel.</td></tr>
+    <tr><td>28 Aug 2026</td><td>v1.3 — Restructure: new §6 The admin guide (setup, write token, calibration folder, monthly routine, teaching a credit its rules) replaces the old admin-seat section; the old install, generate-a-review, improve-a-credit and monthly-calibration sections are removed, with their unique content folded into §1 (schemes, severity meanings, coverage ledger, SCH.1), §5 (requirements, network note, Updating) and §6 (teaching flow). GitHub token-minting mechanics removed from this public page; the write token is delivered by Sureal through a secure channel. Also: update-habit highlight in §1; §5 Updating rewritten for the in-app one-click flow and the red API-key banner (system v1.2.6).</td></tr>
     <tr><td>28 Aug 2026</td><td>v1.2.3 — New opener "What it does — in thirty seconds" above the Quickstart; removed the canonical-vs-app-snapshot note (the app links to this same page).</td></tr>
     <tr><td>28 Aug 2026</td><td>v1.2.2 — New §5 Quick install: user-seat setup in two parts (install the app; connect the calibration folder), with the missing-Python → Microsoft Store fix and the no-panic fallback when the folder isn't connected. Later sections renumbered.</td></tr>
     <tr><td>28 Aug 2026</td><td>v1.2.1 — New §4 "The first month": the patience + expert-feedback ask, the deal, and the improvement flow. Quickstart card wording: "AI comments". Later sections renumbered.</td></tr>
@@ -671,7 +672,7 @@
 </main>
 
 <footer>
-  <div class="wrap">Sureal Report Reviewer · Manual v1.3 for the v1.2 system · Maintainer: Sureal.</div>
+  <div class="wrap">Sureal Report Reviewer · Manual v1.3 for the v1.2.6 system · Maintainer: Sureal.</div>
 </footer>
 
 <script>
