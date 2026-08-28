@@ -163,7 +163,15 @@
   .causes p{margin:0;font-size:14.5px}
   .safe{background:var(--paper-2);border-left:4px solid var(--forest);border-radius:0 8px 8px 0;padding:14px 18px;margin:16px 0;font-size:15px}
   .safe b{color:var(--forest)}
-  /* ===== What-it-does checks grid (v1.2.3) ===== */
+  /* ===== Admin role strip (v1.3) ===== */
+  /* Role strip — who does what */
+  .roles{border:1px solid var(--line);border-radius:10px;margin:14px 0;overflow:hidden}
+  .roles .ro{display:flex;gap:14px;padding:10px 16px;align-items:baseline;flex-wrap:wrap}
+  .roles .ro + .ro{border-top:1px solid var(--line)}
+  .roles .ro-name{flex:0 0 150px;font-weight:700;color:var(--forest)}
+  .roles p{margin:0;font-size:14.5px;flex:1;min-width:200px}
+  @media (max-width:560px){.roles .ro-name{flex:none}}
+    /* ===== What-it-does checks grid (v1.2.3) ===== */
   .checks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
   @media (max-width:620px){.checks{grid-template-columns:1fr}}
   .checks .ck{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--paper)}
@@ -204,7 +212,7 @@
   <div class="wrap">
     <h1>Sureal Report Reviewer</h1>
     <div class="sub">The Manual — a system that improves itself, with experts holding the pen</div>
-    <div class="stamp">Manual v1.2.3 · documents system v1.2 · updated 28 August 2026</div>
+    <div class="stamp">Manual v1.3 · documents system v1.2 · updated 28 August 2026</div>
   </div>
 </header>
 
@@ -212,9 +220,9 @@
   <div class="wrap">
     <div class="r-eyebrow">Find your section</div>
     <div class="r-row"><span class="r-role">Reviewers</span><span class="r-links"><a href="#quickstart">Quickstart (§1)</a><a href="#feedback">Feedback to the AI (§2)</a><a href="#failed">If a report fails (§3)</a><a href="#firstmonth">The first month (§4)</a><a href="#quickinstall">Quick install (§5)</a></span></div>
-    <div class="r-row"><span class="r-role">Management</span><span class="r-links"><a href="#goal">The big picture (§6)</a><a href="#roi">The savings math</a><a href="#v1">Where this goes (§13)</a></span></div>
-    <div class="r-row"><span class="r-role">Maintainers</span><span class="r-links"><a href="#improve">Improve a credit module (§10)</a><span class="r-plain">Technical reference: the repository docs</span></span></div>
-    <div class="r-row"><span class="r-role">Admins</span><span class="r-links"><a href="#admin">The admin seat (§14)</a></span></div>
+    <div class="r-row"><span class="r-role">Management</span><span class="r-links"><a href="#goal">The big picture (§7)</a><a href="#roi">The savings math</a><a href="#v1">Where this goes (§10)</a></span></div>
+    <div class="r-row"><span class="r-role">Maintainers</span><span class="r-links"><a href="#teach">Teach a credit its rules (§6)</a><span class="r-plain">Technical reference: the repository docs</span></span></div>
+    <div class="r-row"><span class="r-role">Admins</span><span class="r-links"><a href="#admin">The admin guide (§6)</a></span></div>
   </div>
 </div>
 
@@ -262,7 +270,7 @@
         <div class="rr"><span class="dot y"></span><p><b>Tested</b> — proven on real reports: the mechanical checks and AI audits run and catch real issues, but the firm-specific rulebook isn't loaded yet.</p></div>
         <div class="rr"><span class="dot w"></span><p><b>Not yet tested</b> — it runs, but treat the output as an experiment, and tell Sureal what you see.</p></div>
       </div></li>
-    <li><b>Upload.</b> Choose the report (.docx), select the scheme, credit and stage, and confirm the building name. <i>(About a minute.)</i></li>
+    <li><b>Upload.</b> Choose the report (.docx), select the scheme (NC2016 / RFO2015 / V6 / V7), credit and stage, and confirm the building name. <i>(About a minute.)</i></li>
     <li><b>Wait — 5 to 20 minutes</b> depending on document size. The status page shows each phase live; you can close the tab and come back.</li>
     <li><b>Download.</b> The file keeps its original name — save it over your working copy, or next to it.
       <span class="donewhen">You're done when the document opens in Word with comments in the margin.</span></li>
@@ -280,12 +288,14 @@
   <p class="anatomy"><b>Rule + severity</b> → what's wrong, in one line → <b>Action Required</b> tells you exactly what to change → <b>Source</b> names the rule that produced it.</p>
   <table>
     <tr><th>Severity</th><th>What to do</th></tr>
-    <tr><td><b>CRITICAL</b></td><td>Fix before the report goes anywhere. Rare by design — more than a couple means the document has a real problem.</td></tr>
-    <tr><td><b>HIGH</b></td><td>Fix before submission — a likely assessor finding.</td></tr>
-    <tr><td><b>MEDIUM</b></td><td>Fix unless you have a documented reason not to.</td></tr>
-    <tr><td><b>LOW</b></td><td>Polish — seconds each, fix in the same pass.</td></tr>
+    <tr><td><b>CRITICAL</b></td><td>Compliance-blocking: mandatory BREEAM evidence is missing or a core claim is unsupported. Fix before the report goes anywhere — rare by design; more than a couple means the document has a real problem.</td></tr>
+    <tr><td><b>HIGH</b></td><td>A likely assessor finding: evidence gaps, contradictions between sections, unsubstantiated claims. Fix before submission.</td></tr>
+    <tr><td><b>MEDIUM</b></td><td>Weakens the evidence or the document's consistency: vague commitments, template text, inconsistent KPIs. Fix unless you have a documented reason not to.</td></tr>
+    <tr><td><b>LOW</b></td><td>Polish: terminology (e.g. BREEAM's "demountable"), British English, captions, formatting. Seconds each, fix in the same pass.</td></tr>
   </table>
   <p><b>The review is honest about itself.</b> An uncalibrated credit says so in its output. If one of the audit passes couldn't run, the result says <i>“complete — N of M audits unavailable”</i> with the reason. What you see is exactly what was checked — and what wasn't.</p>
+  <p><b>The coverage ledger.</b> Next to each review the system writes <code>rule_coverage.json</code>: which rules produced findings, which were checked and found clean. Nothing is sampled; everything is swept — and you can show this file to a client or an assessor as evidence of review rigour.</p>
+  <p class="note">If the document states a different BREEAM version than the scheme you selected, the review flags it (SCH.1). That flag is usually right — check the project's actual registration before dismissing it.</p>
 
   <h3>Reply to the comments — this is where the teaching happens</h3>
   <p>Your replies in Word are how the system learns. Three replies carry meaning:</p>
@@ -328,7 +338,7 @@
 
   <h3>What happens with it</h3>
   <p>At month-end, the system turns the month's replies and disputed comments into a short verdict workbook; your experts mark agree / disagree / suppress — a few minutes, once a month. The admin then approves or rejects every proposal individually, and the result reaches everyone through the ordinary update banner. Your two-line reply in March is a better review in April.</p>
-  <p class="note">Also feeding this folder: candidates files from teaching a new credit its rules — see §10.</p>
+  <p class="note">Also feeding this folder: candidates files from teaching a new credit its rules — see §6.</p>
 </section>
 
 <section id="failed">
@@ -390,8 +400,9 @@
 
   <h3>Part 1 · Install the app — once, ~10 minutes</h3>
   <div class="need">
-    <div class="n-title">Before you start, have these two things</div>
+    <div class="n-title">Before you start</div>
     <ul>
+      <li>A <b>Windows 10/11 PC</b> — no admin rights needed</li>
       <li>The installer file from <b>Sureal's most recent mail</b>, saved into your <b>Downloads</b> folder (it's personal to your organisation — don't forward it)</li>
       <li>The <b>API key</b> Sureal sent you through a separate channel — keep it where you can retype it</li>
     </ul>
@@ -413,6 +424,7 @@
       <span class="donewhen">You're done when you see the green page and the desktop icon exists.</span></li>
   </ol>
   <div class="safe"><b>Three things that keep this stress-free.</b> Re-running the installer is <b>always safe</b> — it never damages an existing install, so "paste the line again" is the universal fix. In PowerShell, <b>silence means it worked</b>. And everything runs on your own machine — documents only leave it for the AI review calls.</div>
+  <p class="note">Network error during install? Ask Sureal for the offline dependency bundle and re-run with that folder beside the installer. A message about your Python version isn't a network problem — send Sureal that exact line.</p>
 
   <h3>Part 2 · Connect the calibration folder — once, ~2 minutes</h3>
   <p>The calibration folder is the shared OneDrive/SharePoint folder that carries your feedback to Sureal automatically — no downloads, no mails. Your admin has already created it; your job is only to <em>connect</em> to it.</p>
@@ -425,11 +437,93 @@
   <p class="note">If "Search this machine" doesn't find it: check the sync actually finished, or paste the folder's local path (the one starting with <code>C:\</code> — never the <code>https://…</code> SharePoint link, and without quotation marks around it) and click <b>Connect</b>. Still stuck? That's an admin question, not a you-problem.</p>
   <div class="golden"><b>Not connected yet? Nothing is lost.</b> The app works fully without the folder — anything you capture stays on your machine, and a green download button on the results screen hands it over instead. Connect whenever convenient.</div>
 
+  <h3>Updating — one click, whenever the banner appears</h3>
+  <p>When a new version exists, a banner appears in the app: <i>"Version X available."</i> Open the <b>Update page</b> and click once. The updater is transactional — it refuses while a review is running, backs everything up, applies the update, re-runs the self-test, and rolls back automatically if anything fails — and it has been proven in the field, not just in theory. Your local data is never touched.</p>
+
   <div class="askadmin"><span class="aa-ic">🛟</span><p><b>Any trouble with either part?</b> Don't troubleshoot — take a screenshot and ask your admin. They'll sort it out with Sureal, usually the same day.</p></div>
 </section>
 
+<section id="admin">
+  <h2>6 · The admin guide — one seat that governs the learning</h2>
+  <p class="lead">One install per organisation is the admin seat. It doesn't review reports differently — it decides what the system is allowed to learn. Setup is once (~15 minutes plus sync time); the routine is monthly.</p>
+
+  <h3>The mental model — three roles, one direction of travel</h3>
+  <div class="roles">
+    <div class="ro"><span class="ro-name">Every reviewer</span><p><em>Captures.</em> Replies on AI comments and uploaded reviewed reports become proposals — nothing more.</p></div>
+    <div class="ro"><span class="ro-name">The admin (you)</span><p><em>Creates and reviews.</em> You set up the shared calibration folder once — every seat then finds it — and you review the month's queue.</p></div>
+    <div class="ro"><span class="ro-name">Sureal</span><p><em>Approves and releases.</em> Every rule is validated and approved individually, then reaches the whole team as a versioned update.</p></div>
+  </div>
+  <p><b>The one guarantee behind it all:</b> nothing anyone does — reviewer, admin, or Sureal — ever changes a live rulebook directly. Everything travels through staging, a human decision, and a versioned, reversible release. On every non-admin install, the admin page simply doesn't exist: not hidden behind a login, absent by design.</p>
+
+  <h3>One-time setup · Step 1 — activate the admin page</h3>
+  <p>Install the app first like any seat (§5, Part 1). Then, on your machine only, open <b>PowerShell</b> (normal, <em>not</em> "as administrator") and paste:</p>
+  <pre><code>cd "$env:LOCALAPPDATA\Sureal\breeam-pipeline"; &amp; ".\.venv\Scripts\python.exe" -c "from calibration import admin; admin.set_admin(True); print('is_admin:', admin.is_admin())"</code></pre>
+  <p>This is deliberately not settable from the web interface — an admin seat is created at the keyboard, not clicked into existence.</p>
+  <span class="donewhen">You'll see <code>is_admin: True</code> and nothing else. Reload the app — a <b>Rules admin</b> entry appears in the top bar.</span>
+  <p class="note">To hand the seat over or step down, run the same line with <code>False</code> — the page returns "not found" again, which is the correct state for every other install.</p>
+
+  <h3>Step 2 — store the write token</h3>
+  <p>Sureal sends you the write token through a secure channel (Teams or SMS — never in the same mail as anything else). It is the <b>only</b> read-write credential in the whole fleet, which is precisely what makes your seat the only one that can publish.</p>
+  <ol class="steps">
+    <li>Open <b>Rules admin</b> → paste the token into the <b>Write token</b> box → save. Once. Nowhere else, ever.</li>
+    <li>After saving, the app shows a short <b>fingerprint</b> — the only form in which the token is ever displayed, and how you verify which one is stored.</li>
+    <li>The token expires after one year: put the renewal date in your calendar <em>today</em>. An expired token surfaces as a refused publish, not a warning.</li>
+  </ol>
+  <div class="safe"><b>One iron rule:</b> the token never travels through mail, chat, or a terminal. If it ever appears in one — including by accident — tell Sureal immediately; it is revoked and reissued the same day. That costs nothing. A leaked token that stays quiet is the only expensive version.</div>
+
+  <h3>Step 3 — create the calibration folder (once, for everyone)</h3>
+  <p>The folder is the team's entire hand-over channel: reviewed documents and candidates files go in, your review queue fills itself from it. You create it once; every other seat merely connects (§5, Part 2).</p>
+  <ol class="steps">
+    <li><b>Create a folder</b> in the organisation's shared SharePoint/OneDrive library and <b>sync</b> that library to your machine (SharePoint web → the library → Sync). Let it finish — the folder appears in File Explorer.</li>
+    <li>Right-click the folder → <b>"Always keep on this device"</b> — the app refuses cloud-only placeholder content.</li>
+    <li>App → <b>Calibration</b> page → <b>"Set up the folder (Sureal admin, once)"</b> → paste the folder's <b>local path</b> (the one starting with <code>C:\</code>, without quotation marks — never the <code>https://…</code> SharePoint link) → <b>Set up this folder</b>.</li>
+    <li>Setup verifies the folder is writable, sync-backed and fully on disk, then writes a hidden <b>marker file</b> inside it and creates the working subfolders (inbox, expert-review, processed, quarantine).
+      <span class="donewhen">You're done when the Calibration page shows the folder as set up.</span></li>
+  </ol>
+  <p><b>The marker is the folder's identity, not the path.</b> Every seat recognises the folder by the marker inside it, so moving or renaming the folder later is safe — the app re-finds it. The only fatal act is deleting the marker file; don't.</p>
+  <p>Then tell the team the one rule that matters: <em>drop files in and leave them alone</em> — no renaming, no moving out. And point everyone at §5 to connect their own seat.</p>
+
+  <h3>The monthly routine — four moves</h3>
+  <div class="flow">
+    <div class="st"><b>Ingest</b>the folder fills your queue</div>
+    <div class="st"><b>Experts verdict</b>the review sheet, minutes</div>
+    <div class="st"><b>You decide</b>approve / edit / reject, each item</div>
+    <div class="st"><b>Publish</b>one transaction to the fleet</div>
+  </div>
+  <ol class="steps">
+    <li><b>Ingest.</b> Captured rules and feedback verdicts arrive via the folder; <b>"Check the folder now"</b> (or the background sweep) pulls them into <b>Waiting for review</b>.</li>
+    <li><b>Expert verdicts.</b> Export the <b>Expert review sheet</b> per credit — one row per disputed comment; your seniors mark agree / disagree / suppress in minutes. The returning sheet is read back through the same ingest, and only its verdict and comment columns are ever applied; any other change to the sheet is surfaced as a proposal, never silently absorbed.</li>
+    <li><b>Decide.</b> Work the queue one item at a time: <b>Approve as proposed / Approve edited / Reject</b>, with an optional "why" kept alongside the decision. Approving changes no rulebook by itself — it only stages.</li>
+    <li><b>Publish.</b> One click applies the entire approved set as a single transaction — validation gate, version bump, release — and the team receives it through the ordinary update banner. Publish <em>refuses, loudly and safely,</em> while a review is running, while nothing is approved, while your install is behind the latest release, or while program files have local edits. A refusal is the system protecting the fleet, not a malfunction.</li>
+  </ol>
+  <p class="note">Known issue, current version: on Windows, Publish can refuse with "local edits outside the data paths" naming four pack folders — a false positive of the file-link handling, not real damage. Until the fix ships: decide everything as normal, then tell Sureal a release is ready and Sureal publishes it. This note disappears when the fix lands.</p>
+
+  <h3 id="teach">Teaching a credit module its rules</h3>
+  <p>Each credit has its own rule pack, and packs start as scaffolds: the pipeline runs and the mechanical checks work, but the credit-specific rulebook is empty. Any report can <em>test</em> a credit today — upload one document and the mechanical checks and AI audits run immediately, with the rulebook layer reporting itself as uncalibrated. <em>Calibrating</em> — teaching the credit the firm's own rules — needs reviewed history: <b>8–10 fully reviewed reports</b> (.docx with the reviewers' comments still in them, same credit and stage; a useful document carries at least 6 substantive comments — cover pages and sign-offs teach nothing). Below that, the pack still works but is flagged <em>low-confidence</em> and its findings deserve extra scepticism.</p>
+  <ol class="steps">
+    <li>Collect the reviewed DOCX files. Do <b>not</b> rename anything to <code>*_ORIGINAL.docx</code> — that suffix is reserved by the system.</li>
+    <li>App → <b>Expert Rules</b> → select the credit and stage → upload the documents. Any seat can do this — it doesn't need the admin machine.</li>
+    <li>The system clusters recurring reviewer concerns into candidate rules behind safety gates: each candidate needs a correct <em>and</em> an incorrect example and must appear in at least two documents. Singletons are parked, not published.</li>
+    <li>Candidates land in <b>staging — never the live rulebook</b> — and travel to Sureal via the calibration folder (or the green download button on a seat that isn't connected). Approved rules arrive in a future update, and from then on every review of that credit applies them, with the coverage ledger proving it.</li>
+  </ol>
+
+  <div class="golden"><b>What being admin actually means.</b> You are the quality gate between "a reviewer disagreed" and "the whole team's reviews changed". Reject freely — a rejected proposal costs nothing and can always come back with better evidence. The one thing the role never requires is speed: an unpublished queue is a safe queue.</div>
+
+  <div class="pitfalls">
+    <h3>⚠ Admin pitfalls — each learned the hard way</h3>
+    <ul>
+      <li><b>Never edit rule database files by hand.</b> A hand-calibrated ruleset was once overwritten by a well-intentioned bulk operation and survived only because of version control. The staged approve flow validates before every write — it exists so this can never happen again.</li>
+      <li><b>Never delete the marker file</b> in the calibration folder — it is how every machine recognises the folder.</li>
+      <li><b>One document, one ingest per round.</b> The same report processed twice inflates rule frequencies and can push weak rules over the acceptance threshold.</li>
+      <li><b>A refused Publish is information, not an obstacle.</b> Read the reason it gives; it names exactly what to resolve.</li>
+    </ul>
+  </div>
+
+  <p>Anything odd at any step — a setup check that fails, a publish refusal you can't place, a queue that looks wrong — contact Sureal with a screenshot. The admin seat has exactly one escalation path, and it's fast.</p>
+</section>
+
 <section id="goal">
-  <h2>6 · The big picture</h2>
+  <h2>7 · The big picture</h2>
   <p class="lead">We have entered the era where software improves itself. This is what that looks like for BREEAM review.</p>
   <p>Traditional software is finished the day it ships, and ages from that moment. This system is the opposite: it is an <b>agentic micro-engine</b> — a growing body of firm-owned knowledge (calibrated rules, reviewer verdicts, regulation packs, coverage ledgers) that every review adds to, and that AI agents read, apply, and extend. The software your team uses next quarter will be measurably better than today's — not because a vendor shipped an update, but because <em>your own reviewed reports taught it</em>. Improvement is the product's default state; humans approve every step of it.</p>
   <p>The concrete problem it solves today: Sureal reviews BREEAM credit reports with a four-pairs-of-eyes principle — every draft is read, in full, by multiple senior reviewers before it reaches a client. That produces excellent reviews, and consumes senior hours on every report, on checks that repeat from document to document: terminology, consistency, completeness, the firm's hard-won rules about what assessors accept.</p>
@@ -438,7 +532,7 @@
 </section>
 
 <section id="solution">
-  <h2>7 · The current solution — and why it's the right one</h2>
+  <h2>8 · The current solution — and why it's the right one</h2>
   <p>A reviewed document goes through a pipeline of thirteen steps. The principle: <b>deterministic code where determinism belongs, AI where judgment belongs, and a ledger proving nothing was skipped</b> — with failures reported just as loudly as findings: if an audit cannot be delivered, the review says so on its face instead of pretending completeness. Trust is symmetric.</p>
   <div class="flow">
     <div class="st"><b>Extract</b>text, tables, figures<span class="tag py">CODE</span></div>
@@ -482,110 +576,30 @@
       <div class="tile"><div class="lbl">Cost per report — before → after</div><div class="val" id="tRep">—</div></div>
     </div>
     <div class="reason">
-      <b>The reasoning behind the defaults.</b> Sureal's four-pairs-of-eyes principle means every report is read in full by its creator plus three fresh reviewers. The creator's authoring time (default 6 h) is part of every report's cost — and the system, honestly, does not touch it: it reviews, it doesn't write (§13 shows where that could go). The savings apply to the <em>review passes</em>: each reviewer starts from a document that arrives pre-checked and pre-commented, so they begin at judgment instead of at page one. <b>40 %</b> is the conservative V1 estimate for that speed-up; V2 (after months of calibration feedback) targets 60 %; V3 (validation-only, see §13) targets 80 %. The measured API cost per review is subtracted. Move any slider you disagree with; the math updates and the formula stays visible.
+      <b>The reasoning behind the defaults.</b> Sureal's four-pairs-of-eyes principle means every report is read in full by its creator plus three fresh reviewers. The creator's authoring time (default 6 h) is part of every report's cost — and the system, honestly, does not touch it: it reviews, it doesn't write (§10 shows where that could go). The savings apply to the <em>review passes</em>: each reviewer starts from a document that arrives pre-checked and pre-commented, so they begin at judgment instead of at page one. <b>40 %</b> is the conservative V1 estimate for that speed-up; V2 (after months of calibration feedback) targets 60 %; V3 (validation-only, see §10) targets 80 %. The measured API cost per review is subtracted. Move any slider you disagree with; the math updates and the formula stays visible.
       <div class="formula" id="fLine"></div>
     </div>
   </div>
 </section>
 
-<section id="install">
-  <h2>8 · How to install</h2>
-  <p>You need: a Windows 10/11 PC (<b>no admin rights required</b>), the personal installer Sureal sends you (it is personal to your organisation — don't forward it), and the API key Sureal provides through a separate channel.</p>
-  <ol class="steps">
-    <li>Save <code>install-win.zip</code> from Sureal's most recent mail into your Downloads folder. No need to extract it — the next step does that for you.</li>
-    <li>Open <b>PowerShell</b> (normal, <em>not</em> "as administrator").</li>     <li>Paste this line and press Enter — it finds the installer in Downloads, extracts it if needed, and starts it: <pre><code>cd $HOME\Downloads; $z = Get-ChildItem install-win*.zip -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($z) { Expand-Archive $z.FullName -DestinationPath . -Force }; $s = Get-ChildItem -Recurse -Filter install-win.ps1 -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if (-not $s) { Write-Host "[ERROR] install-win.zip not found - save the file from Sureal's mail into Downloads first" -ForegroundColor Red } else { powershell -ExecutionPolicy Bypass -File $s.FullName }</code></pre>     If it prints a red <em>install-win.zip not found</em>, the file isn't in Downloads yet — save it from the mail and paste the same line again. Old installer copies expire; always use the one from the most recent mail.</li>
-    <li>Follow the prompts. The installer finds what it needs on your machine (fetching portable tools where necessary), downloads the software, asks once for the API key (type it yourself — keys are never sent in the same mail as the installer), runs a self-test, and opens the app in your browser.</li>
-    <li>From now on, open the app via the <b>Sureal Report Reviewer</b> icon the installer placed on your desktop — it starts the app if it isn't running and opens it in your browser (at <code>http://127.0.0.1:8000</code>). Everything runs entirely on your own machine; documents never leave it except for the AI review calls.</li>
-  </ol>
-  <p class="note">If it stops on a network error, ask Sureal for the offline dependency bundle and re-run with that folder beside the installer. If it says a package doesn't support your Python version, send Sureal that exact line — it is not a network or certificate problem.</p>
-  <h3>Updating</h3>
-  <p>When a new version exists, a banner appears in the app: <em>"Version X available."</em> Open the <b>Update page</b> and click once. The updater is transactional — it checks nothing is running, backs everything up, applies the update, re-runs the full self-test, and rolls back automatically if anything fails — and it has been proven in the field, not just in theory. Your local data is never touched.</p>
-</section>
-
-<section id="use">
-  <h2>9 · How to generate a review</h2>
-  <ol class="steps">
-    <li>Open the app → <b>Upload</b>. Choose the report (.docx), select the scheme (NC2016 / RFO2015 / V6 / V7), the credit, the stage, and confirm the building name.</li>
-    <li>Wait — typically 5 to 20 minutes depending on the size of the document. The status page shows each phase as it completes, the elapsed time, and a live activity heartbeat; if progress genuinely stops, it says <em>"possibly stalled"</em> instead of spinning forever.</li>
-    <li><b>Download.</b> The file keeps its original name — save it over your working copy or alongside it.</li>
-    <li>Open it in Word. The review is there as ordinary comments, each anchored to the exact sentence it concerns, each labelled with its source rule and severity.</li>
-    <li><b>Reply in Word to any comment you disagree with</b> — a short "disagree, this is present in annex 3" or "stop flagging this" is enough. This is not politeness; it is how the system learns (§11). Agreeing silently is fine; disagreeing silently wastes the signal.</li>
-  </ol>
-  <p><b>Honest completion.</b> A run reports exactly what it delivered. If one of the audit passes could not be produced, the result says <em>"complete — N of M audits unavailable"</em> with the reason, and minor output-shape issues are attached as quality notes rather than hidden. You always know what was checked — and what wasn't.</p>
-  <h3>Reading a comment</h3>
-  <p>Every AI comment follows the same anatomy: <code>[RULE.ID] SEVERITY — CATEGORY</code>, a one-line issue, an <em>Action Required</em> telling you exactly what to change, and a <em>Source</em> line naming the rule that produced it. The severities mean:</p>
-  <table>
-    <tr><th>Label</th><th>What it means</th><th>What to do</th></tr>
-    <tr><td><b>CRITICAL</b></td><td>Compliance-blocking: mandatory BREEAM evidence is missing or a core claim is unsupported. An assessor would likely reject this as it stands.</td><td>Fix before the report goes anywhere. Rare by design — if you see more than a couple, something is genuinely wrong with the document.</td></tr>
-    <tr><td><b>HIGH</b></td><td>A likely assessor finding: evidence gaps, contradictions between sections, unsubstantiated claims.</td><td>Fix before submission.</td></tr>
-    <tr><td><b>MEDIUM</b></td><td>Weakens the evidence or the document's consistency: vague commitments, template text, inconsistent KPIs, unclear scope.</td><td>Fix unless you have a documented reason not to.</td></tr>
-    <tr><td><b>LOW</b></td><td>Polish: terminology (e.g. BREEAM's "demountable"), British English, captions, formatting.</td><td>Fix in the same pass; costs seconds each.</td></tr>
-  </table>
-  <h3>Replying — how the system hears you</h3>
-  <p>Your replies in Word are read during calibration, and three kinds of reply carry meaning. <b>Agree</b> ("agreed", "will fix") — confirms the rule is earning its place. <b>Disagree with a reason</b> ("disagree — this is present in annex 3") — the most valuable reply you can write; recurring disagreement flags the rule for review and retunes it. <b>Suppress</b> ("stop making this comment") — tells the system this check isn't wanted; enough of these and the rule is retired. Silence counts weakly as agreement, so when a comment is wrong, two lines of reply is how you fix next month's reviews — not just this document.</p>
-  <p><b>The coverage ledger.</b> Next to each review the system writes <code>rule_coverage.json</code>: which rules produced findings, which were checked and found clean. Nothing is sampled; everything is swept. You can show this file to a client or an assessor as evidence of review rigour.</p>
-  <p class="note">If the document states a different BREEAM version than the scheme you selected, the review will flag it (SCH.1). That flag is usually right — check the project's actual registration before dismissing it.</p>
-</section>
-
-<section id="improve">
-  <h2>10 · How to improve a credit module</h2>
-  <p>Each credit (Mat 06, Tra 05, …) has its own rule pack. Packs start as scaffolds — the pipeline runs, mechanical checks work, but the credit-specific rulebook is empty.</p>
-  <p><b>Testing vs calibrating.</b> Any report can <em>test</em> a credit today: upload one document — no reviewer comments needed — and the mechanical checks and the audit wave run immediately, with the rulebook layer reporting itself as uncalibrated. <em>Calibrating</em> — teaching the credit the firm's own rules — is what needs the reviewed history below.</p>
-  <table>
-    <tr><th>What you feed it</th><th>Minimum for a calibrated pack</th></tr>
-    <tr><td>Fully reviewed historical reports (.docx with the reviewers' comments still in them), same credit &amp; stage</td><td><b>8–10 documents.</b> The reference-standard pack was calibrated on 8. Below that, the pack still works but is flagged <em>low-confidence</em> and its findings deserve extra scepticism.</td></tr>
-    <tr><td>Comment density</td><td>A useful document carries ≥ 6 substantive reviewer comments. Cover pages and sign-offs teach nothing.</td></tr>
-  </table>
-  <ol class="steps">
-    <li>Collect the reviewed DOCX files. Do <b>not</b> rename anything to <code>*_ORIGINAL.docx</code> — that suffix is reserved by the system.</li>
-    <li>App → <b>Expert Rules</b> → select the credit and stage → upload the documents.</li>
-    <li>The system extracts every reviewer comment, clusters recurring concerns into candidate rules, and applies safety gates: a candidate needs a correct <em>and</em> an incorrect example, and must appear in at least two documents. Singletons are parked, not published.</li>
-    <li>Candidates go to a <b>staging file — never directly into the live rulebook.</b> Drop the candidates file into the calibration folder (§11). Nothing takes effect until a human at Sureal has approved each rule individually.</li>
-    <li>Approved rules arrive in a future update, and from then on every review of that credit applies them — with the coverage ledger proving it.</li>
-  </ol>
-</section>
-
-<section id="calibrate">
-  <h2>11 · The monthly calibration</h2>
-  <p>Once a month, the system learns from the month's real work. Two signals feed it: the <b>replies</b> reviewers wrote on AI comments (§9 step 5), and <b>new reviewed documents</b> (§10). The collection point is the <b>shared calibration folder</b> on SharePoint/OneDrive that Sureal sets up with your team — keep it set to <em>"Always keep on this device"</em>. The routine:</p>
-  <ol class="steps">
-    <li><b>Reviewers:</b> keep working in the reviewed files, and drop the month's commented reports — plus any candidates files from §10 — into the calibration folder whenever convenient, end of month at the latest. That folder <em>is</em> the hand-over; no mails, no forms.</li>
-    <li><b>Experts:</b> the system turns the month's replies and disputed comments into a verdict workbook (Excel) — one row per disputed comment, mark agree / disagree / suppress. A few minutes, once a month, and it is the highest-leverage teaching your seniors can do.</li>
-    <li><b>Admin (Sureal):</b> every candidate rule and every verdict goes through an interactive approve/reject session — rule by rule, validated, version-stamped. Nothing reaches the live rulebook automatically. Accepted changes are published as a release.</li>
-    <li><b>Everyone:</b> the update banner appears; one click on the Update page and the improved rulebook is live for the whole team at once.</li>
-  </ol>
-  <div class="pitfalls">
-    <h3>⚠ Pitfalls — each of these was learned the hard way</h3>
-    <ul>
-      <li><b>Never edit the rule database files by hand.</b> A hand-calibrated ruleset was once overwritten by a well-intentioned bulk operation and survived only because of version control. All changes go through the staged approve flow, which validates before every write.</li>
-      <li><b>Keep working in the reviewed file.</b> Your replies to the AI's comments are only visible to the system in the file that contains them. If you copy text into a fresh document, the learning signal dies with the old file.</li>
-      <li><b>Don't rename or move files out of the calibration folder.</b> The monthly round pairs each file against the system's own records; renaming or relocating breaks the pairing. Let files live there, synced and hydrated.</li>
-      <li><b>One report, one upload per round.</b> Uploading the same document twice inflates rule frequencies and can push weak rules over the acceptance threshold.</li>
-      <li><b>Resolve scheme flags, don't dismiss them.</b> When the system raises SCH.1 (document says V6, review ran NC2016), confirm the project's actual registration first. This mismatch was found on multiple historical documents — it is not a false alarm by default.</li>
-      <li><b>A candidates file that never reaches the calibration folder does nothing.</b> Until it is there and approved by Sureal, it's a proposal sitting in a folder. Drop it in.</li>
-      <li><b>Disagreement is data.</b> The most valuable thing a reviewer can do for the system is reply "disagree — here's why" on a wrong comment. Suppressed annoyance teaches nothing; a two-line reply retrains the rulebook.</li>
-    </ul>
-  </div>
-</section>
-
 <section id="roadmap">
-  <h2>12 · Planned improvements</h2>
+  <h2>9 · Planned improvements</h2>
   <table>
     <tr><th>Release</th><th>What changes</th><th>Why it matters</th></tr>
     <tr><td><b>v1.2</b> — shipped</td><td>Hardened API retry policy; action-first comment style (shorter, clearer comments); native Windows installation with transactional one-click update, proven in the field; live status page with heartbeat and honest failure reporting; staged calibration governance (nothing auto-merges); batch QA that measures verdict stability across the whole catalogue.</td><td>The system became a distributable, updatable, <em>measurable</em> fleet product — and its consistency is now a published number, not a feeling.</td></tr>
     <tr><td><b>v1.3</b> — next</td><td>Consolidation rebuilt as accountable code with a merge ledger (every finding kept, merged, or dropped-with-reason); prompt caching.</td><td>The AI consolidation step is the main measured source of run-to-run variance — replacing it targets verdict stability beyond 90%, with before/after numbers in the release notes. Caching cuts the API cost of every report.</td></tr>
     <tr><td><b>Later</b></td><td>Evaluation harness: a frozen gold set of reviewed documents, scored per-rule (precision / recall) on every change.</td><td>Model and rule upgrades become measured decisions, not judgment calls. The gate for any "validation-ready" claim.</td></tr>
     <tr><td><b>Later</b></td><td>SharePoint in-place operation — comments written directly into the working file, no upload/download.</td><td>The fork between "working file" and "reviewed file" disappears; the learning loop runs itself.</td></tr>
-    <tr><td><b>Ongoing</b></td><td>V7 (SD6073) rule encoding by the Sureal team from real V7 review documents, using §10.</td><td>The catalogue grows to the new scheme with the same graduation discipline.</td></tr>
+    <tr><td><b>Ongoing</b></td><td>V7 (SD6073) rule encoding by the Sureal team from real V7 review documents, using the teaching flow in §6.</td><td>The catalogue grows to the new scheme with the same graduation discipline.</td></tr>
   </table>
 </section>
 
 <section id="v1">
-  <h2>13 · This is a V1 — where it goes from here</h2>
+  <h2>10 · This is a V1 — where it goes from here</h2>
   <p>What you are using today is the first rung of a ladder. The destination is not "AI instead of experts" — it is a steadily rising division of labour in which <b>the human never leaves the loop; the loop moves up.</b></p>
   <div class="ladder">
     <div class="rung"><b>V1 — the tireless junior</b> <span class="you">you are here</span><br>The system drafts the review; every calibrated rule is swept and proven. Experts still author the final judgment. Value: senior hours stop being spent on mechanical and rulebook checks. Reviewer time ≈ −40 %.</div>
-    <div class="rung"><b>V2 — the reliable colleague</b><br>Months of reply-verdicts and monthly calibration have tuned the rulebook to the team. Drafts need visibly less correction; the coverage ledger ships with every client review as a rigour statement. Requires: sustained §11 discipline. Reviewer time ≈ −60 %.</div>
+    <div class="rung"><b>V2 — the reliable colleague</b><br>Months of reply-verdicts and monthly calibration have tuned the rulebook to the team. Drafts need visibly less correction; the coverage ledger ships with every client review as a rigour statement. Requires: sustained calibration discipline (§6). Reviewer time ≈ −60 %.</div>
     <div class="rung"><b>V3 — validation-ready</b><br>The report review arrives practically flawless <em>in Sureal's own voice</em> — house terminology, house structure, house judgment — because the style itself is learned from accumulated verdicts. The expert's role shifts from author to <b>approver</b>: read, decide, sign. Requires: the evaluation harness proving per-rule precision, so "practically flawless" is a measured claim, not a feeling. Reviewer time ≈ −80 %.</div>
     <div class="rung"><b>V4 — the standard</b><br>New staff are trained <em>by</em> the system's rulebook rather than the reverse. The firm's expertise is an institutional asset — versioned, auditable, teachable — not tacit knowledge in a few senior heads.</div>
   </div>
@@ -605,42 +619,11 @@
   <p><b>That is the story this project tells:</b> not a tool that was built once, but a system that keeps finding its own next improvement — with Sureal's experts holding the approval pen at every step.</p>
 </section>
 
-<section id="admin">
-  <h2>14 · The admin seat — governance and setup</h2>
-  <p>Every install can <em>capture</em>: rules proposed from reviewed documents, and verdicts on the AI's comments. Exactly <b>one</b> install per organisation — the admin seat — reviews, approves, and publishes them. Nothing reaches any rulebook without that seat's human approve/reject, rule by rule; accepted changes reach the whole team as a versioned release through the ordinary update banner. On every other install the admin page simply does not exist — not hidden behind a login, absent by design. Two separate things make a seat the admin: a local flag (shows the page at all) and a write token (allows publishing). The flag without the token can review but never release.</p>
-
-  <h3>One-time setup — step 1 · Activate the admin page</h3>
-  <p>The flag is deliberately not settable from the web interface. On the admin's machine, open <b>PowerShell</b> (normal, <em>not</em> "as administrator") and paste:</p>
-  <pre><code>cd "$env:LOCALAPPDATA\Sureal\breeam-pipeline"; &amp; ".\.venv\Scripts\python.exe" -c "from calibration import admin; admin.set_admin(True); print('is_admin:', admin.is_admin())"</code></pre>
-  <p><b>What you'll see:</b> <code>is_admin: True</code> and nothing else. Reload the app — a <b>Rules admin</b> entry appears in the top bar. To deactivate, run the same line with <code>False</code>; the admin page then returns "not found" again, which is the correct state for every non-admin install.</p>
-
-  <h3>Step 2 · The write token</h3>
-  <p>On the GitHub account that owns the repository: Settings → Developer settings → Fine-grained tokens → Generate. Repository access: <b>only</b> the Sureal repository. Permissions: Contents = Read and write. Expiry: 1 year — put the expiry date in a calendar the day you mint it, because an expired token surfaces as a refused publish, not a warning. Name it after the seat.</p>
-  <p>The token is pasted <b>once</b>, into the "Write token" box on the Rules admin page, in the browser — nowhere else, ever. Three rules: <b>(1)</b> the token travels through no mail, no chat, no terminal; if it ever appears in one, treat it as compromised — revoke on GitHub, mint a new one. <b>(2)</b> After saving, the app shows only a short fingerprint; that fingerprint is the only way the token is ever displayed, and it is how you verify which token is stored. <b>(3)</b> This is the only read-write token in the fleet — every other install is read-only, which is precisely what makes this seat the only writer.</p>
-
-  <h3>Step 3 · The calibration folder</h3>
-  <p>The folder is the team's entire hand-over channel: reviewed documents and candidates files go in; the admin's queue fills itself from it.</p>
-  <ol class="steps">
-    <li>In the organisation's shared SharePoint/OneDrive library, create a folder named <b>Calibration</b> and sync it to the admin machine. Right-click it in Explorer → <b>"Always keep on this device"</b> — the sweep reads real files, not cloud placeholders.</li>
-    <li>On the Rules admin page, point the app at that folder. The app drops a small marker file inside and creates its working subfolders (inbox, expert-review, processed, quarantine) — the marker is how every machine recognises the folder whatever its local path, so never delete it.</li>
-    <li>Tell the team the one rule that matters: drop files into the folder and leave them alone — no renaming, no moving out. The monthly round pairs each file against the system's records; renaming breaks the pairing.</li>
-  </ol>
-
-  <h3>The routine</h3>
-  <ol class="steps">
-    <li>Captured rules and feedback verdicts arrive via the calibration folder; "Check the folder now" (or the background sweep) ingests them into <b>Waiting for review</b>.</li>
-    <li>When a round is due, export the <b>Expert review sheet</b> per credit. The returning sheet is read back through the same ingest — only its verdict and comment columns are ever applied; any other change to the sheet is surfaced as a proposal, never silently absorbed.</li>
-    <li>Decide every queued item one at a time: <b>Approve as proposed / Approve edited / Reject</b>, with an optional "why" kept alongside the decision. Approving changes no rulebook by itself.</li>
-    <li><b>Publish</b> applies the whole approved set in one transaction — contract gate, version bump, release — and the team receives it through the ordinary update banner. Publish refuses, loudly and safely, while a review job is running, while nothing is approved, while the install is behind the latest release, or while program files have local edits.</li>
-  </ol>
-  <p class="note">Current version: on a Windows install, Publish can refuse with "local edits outside the data paths" naming four pack folders — a known false positive of the Windows file-link handling, not real damage. Until the fix ships: decide everything in the admin page as normal, then tell Sureal a release is ready; Sureal publishes it. This note disappears when the fix lands.</p>
-</section>
-
 <section id="honesty">
   <h2>What it doesn't do (yet)</h2>
   <div class="honest">
     <ul>
-      <li><b>Uncalibrated credits run with an empty Sureal experts rulebook.</b> The mechanical checks and the audit wave still run and still catch real issues — but there are no firm-specific rules to sweep until that credit has been calibrated (§10). The review says so, plainly.</li>
+      <li><b>Uncalibrated credits run with an empty rulebook.</b> The mechanical checks and the audit wave still run and still catch real issues — but there are no firm-specific rules to sweep until that credit has been calibrated (§6). The review says so, plainly.</li>
       <li><b>V7 packs are scaffolds.</b> They run, but they wait for real V7 review documents before they can learn anything worth applying.</li>
       <li><b>Consistency is measured and improving — not absolute.</b> 89% of rule verdicts identical across duplicate runs today, beyond 90% targeted in v1.3, with the numbers published each release. No review process, human or machine, is perfectly repeatable; this one is the only one that tells you its number.</li>
       <li><b>It reviews; it doesn't author.</b> The judgment, the signature, and the client relationship stay with your experts. That is the design, not a limitation.</li>
@@ -650,7 +633,7 @@
 
 <section id="addendum">
   <h2>Addendum A · The proof</h2>
-  <p>Every claim in §7, measured on this system, August 2026, on real Sureal client reports (identifying details withheld — this page is public):</p>
+  <p>Every claim in §8, measured on this system, August 2026, on real Sureal client reports (identifying details withheld — this page is public):</p>
   <table class="proof">
     <tr><th>Claim</th><th>Measurement</th></tr>
     <tr><td>Rulebook actually deploys</td><td>Generic-chat baseline (May 2026), on a real concept-design report: <b>0 / 30</b> calibrated rules cited. Current system, same report: <b>30 / 30</b> swept and enforced by code — findings or checked-clean for every rule, 0 dropped in consolidation, per the coverage ledger.</td></tr>
@@ -669,6 +652,7 @@
   <h2>Manual changelog</h2>
   <table class="chlog">
     <tr><th>Date</th><th>Change</th></tr>
+    <tr><td>28 Aug 2026</td><td>v1.3 — Restructure: new §6 The admin guide (setup, write token, calibration folder, monthly routine, teaching a credit its rules) replaces the old admin-seat section; the old install, generate-a-review, improve-a-credit and monthly-calibration sections are removed, with their unique content folded into §1 (schemes, severity meanings, coverage ledger, SCH.1), §5 (requirements, network note, Updating) and §6 (teaching flow). GitHub token-minting mechanics removed from this public page; the write token is delivered by Sureal through a secure channel.</td></tr>
     <tr><td>28 Aug 2026</td><td>v1.2.3 — New opener "What it does — in thirty seconds" above the Quickstart; removed the canonical-vs-app-snapshot note (the app links to this same page).</td></tr>
     <tr><td>28 Aug 2026</td><td>v1.2.2 — New §5 Quick install: user-seat setup in two parts (install the app; connect the calibration folder), with the missing-Python → Microsoft Store fix and the no-panic fallback when the folder isn't connected. Later sections renumbered.</td></tr>
     <tr><td>28 Aug 2026</td><td>v1.2.1 — New §4 "The first month": the patience + expert-feedback ask, the deal, and the improvement flow. Quickstart card wording: "AI comments". Later sections renumbered.</td></tr>
@@ -684,7 +668,7 @@
 </main>
 
 <footer>
-  <div class="wrap">Sureal Report Reviewer · Manual v1.2.3 for the v1.2 system · Maintainer: Sureal.</div>
+  <div class="wrap">Sureal Report Reviewer · Manual v1.3 for the v1.2 system · Maintainer: Sureal.</div>
 </footer>
 
 <script>
