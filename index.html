@@ -163,6 +163,13 @@
   .causes p{margin:0;font-size:14.5px}
   .safe{background:var(--paper-2);border-left:4px solid var(--forest);border-radius:0 8px 8px 0;padding:14px 18px;margin:16px 0;font-size:15px}
   .safe b{color:var(--forest)}
+  /* ===== What-it-does checks grid (v1.2.3) ===== */
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+  @media (max-width:620px){.checks{grid-template-columns:1fr}}
+  .checks .ck{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--paper)}
+  .checks .ck::before{content:"✓";color:var(--mint-dark);font-weight:800;font-size:15px;line-height:1.5}
+  .checks b{color:var(--forest)}
+  .checks p{margin:0;font-size:14.5px}
   /* ===== Quick-install components (v1.2.2) ===== */
 
   /* "Before you start" checklist card */
@@ -197,7 +204,7 @@
   <div class="wrap">
     <h1>Sureal Report Reviewer</h1>
     <div class="sub">The Manual — a system that improves itself, with experts holding the pen</div>
-    <div class="stamp">Manual v1.2.2 · documents system v1.2 · updated 28 August 2026 · </div>
+    <div class="stamp">Manual v1.2.3 · documents system v1.2 · updated 28 August 2026</div>
   </div>
 </header>
 
@@ -212,6 +219,20 @@
 </div>
 
 <main class="wrap">
+
+<section id="what">
+  <h2>What it does — in thirty seconds</h2>
+  <p class="lead">It reads the entire report the way your most meticulous reviewer would — every sentence, every table, every figure — and writes what it finds as ordinary Word comments, anchored to the exact spot they concern.</p>
+  <div class="checks">
+    <div class="ck"><p><b>Spelling &amp; terminology</b> — British English, the correct BREEAM terms, the firm's own wording.</p></div>
+    <div class="ck"><p><b>Formatting &amp; structure</b> — captions, headings, leftover template text.</p></div>
+    <div class="ck"><p><b>Numbers &amp; consistency</b> — figures that contradict each other, claims the evidence doesn't support.</p></div>
+    <div class="ck"><p><b>Images &amp; maps</b> — the visuals, checked against what the text says about them.</p></div>
+    <div class="ck"><p><b>Completeness</b> — required evidence and annexes actually present, scheme and version matching.</p></div>
+    <div class="ck"><p><b>The firm's rulebook</b> — every calibrated Sureal rule, checked on every run, provably.</p></div>
+  </div>
+  <p>You still judge, decide, and sign — that never changes. What changes is where you start: not at page one hunting typos and cross-checking numbers, but at the judgment only an expert can make.</p>
+</section>
 
 <section id="quickstart">
   <h2>1 · Quickstart — your two jobs</h2>
@@ -648,6 +669,7 @@
   <h2>Manual changelog</h2>
   <table class="chlog">
     <tr><th>Date</th><th>Change</th></tr>
+    <tr><td>28 Aug 2026</td><td>v1.2.3 — New opener "What it does — in thirty seconds" above the Quickstart; removed the canonical-vs-app-snapshot note (the app links to this same page).</td></tr>
     <tr><td>28 Aug 2026</td><td>v1.2.2 — New §5 Quick install: user-seat setup in two parts (install the app; connect the calibration folder), with the missing-Python → Microsoft Store fix and the no-panic fallback when the folder isn't connected. Later sections renumbered.</td></tr>
     <tr><td>28 Aug 2026</td><td>v1.2.1 — New §4 "The first month": the patience + expert-feedback ask, the deal, and the improvement flow. Quickstart card wording: "AI comments". Later sections renumbered.</td></tr>
     <tr><td>28 Aug 2026</td><td>v1.2 — The manual now opens with the user: new §1 Quickstart (your two jobs — run a report, teach the AI — with catalogue readiness levels, comment anatomy, and reply patterns), new §2 Providing feedback to the AI (the shared calibration folder as the whole hand-over), new §3 If a report fails (screenshot → mail, the two usual causes). All later sections renumbered; reader navigation updated.</td></tr>
@@ -662,7 +684,7 @@
 </main>
 
 <footer>
-  <div class="wrap">Sureal Report Reviewer · Manual v1.2.2 for the v1.2 system · This page is the manual's canonical home; a snapshot ships inside the app and may lag behind it. Maintainer: Sureal.</div>
+  <div class="wrap">Sureal Report Reviewer · Manual v1.2.3 for the v1.2 system · Maintainer: Sureal.</div>
 </footer>
 
 <script>
