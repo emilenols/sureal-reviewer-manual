@@ -178,6 +178,7 @@
   .checks .ck::before{content:"✓";color:var(--mint-dark);font-weight:800;font-size:15px;line-height:1.5}
   .checks b{color:var(--forest)}
   .checks p{margin:0;font-size:14.5px}
+  .checks .ck.wide{grid-column:1/-1;border-color:var(--mint-dark);background:var(--paper-2)}
   /* ===== Quick-install components (v1.2.2) ===== */
 
   /* "Before you start" checklist card */
@@ -232,6 +233,7 @@
   <h2>What it does — in thirty seconds</h2>
   <p class="lead">It reads the entire report the way your most meticulous reviewer would — every sentence, every table, every figure — and writes what it finds as ordinary Word comments, anchored to the exact spot they concern.</p>
   <div class="checks">
+    <div class="ck wide"><p><b>BREEAM compliance</b> — the report checked against the official criteria of the BREEAM rulebook you selected (NC2016 / RFO2015 / V6 / V7): required evidence, definitions, and demands of that scheme.</p></div>
     <div class="ck"><p><b>Spelling &amp; terminology</b> — British English, the correct BREEAM terms, the firm's own wording.</p></div>
     <div class="ck"><p><b>Formatting &amp; structure</b> — captions, headings, leftover template text.</p></div>
     <div class="ck"><p><b>Numbers &amp; consistency</b> — figures that contradict each other, claims the evidence doesn't support.</p></div>
@@ -351,7 +353,7 @@
     <div class="tcard">
       <span class="t-kicker">Still working — do nothing</span>
       <h3>Slow is normal</h3>
-      <p>5–20 minutes is a normal run, and the status page shows a live heartbeat while phases complete. As long as phases keep ticking, walk away and come back — a slow run is not a failed run. Also keep in mind, the speed will improve over time. </p>
+      <p>5–20 minutes is a normal run, and the status page shows a live heartbeat while phases complete. As long as phases keep ticking, walk away and come back — a slow run is not a failed run.</p>
     </div>
     <div class="tcard bad">
       <span class="t-kicker">Failed — send the screenshot</span>
